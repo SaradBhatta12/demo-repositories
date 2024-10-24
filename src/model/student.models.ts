@@ -5,19 +5,19 @@ interface IStudent extends Document {
   age: number;
   email: string;
   password: string;
-  facaulty: string;
-  courses: Schema.Types.ObjectId[];
+  faculty: string;
+  courses: {}[];
   image: string;
 }
 
 const StudentSchema = new Schema<IStudent>(
   {
     name: { type: String, required: true },
-    age: { type: Number, required: true },
-    facaulty: { type: String, required: true },
+    age: { type: Number },
+    faculty: { type: String },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    courses: [{ type: Schema.Types.ObjectId, ref: "course" }],
+    courses: [{}],
     image: { type: String, required: true },
   },
   {

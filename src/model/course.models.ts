@@ -13,7 +13,6 @@ interface Course extends Document {
   price: number;
   category: string;
   User: mongoose.Types.ObjectId;
-  Student: mongoose.Types.ObjectId;
 }
 
 // Define the course schema
@@ -58,11 +57,6 @@ const courseSchema = new Schema<Course>({
   User: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "user",
-    required: true, // This should typically be required if you are linking with users
-  },
-  Student: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "student",
     required: true, // This should typically be required if you are linking with users
   },
 });
