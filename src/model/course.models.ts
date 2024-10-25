@@ -16,50 +16,22 @@ interface Course extends Document {
 }
 
 // Define the course schema
-const courseSchema = new Schema<Course>({
-  name: {
-    type: String,
-    required: true,
+const courseSchema: Schema = new Schema<Course>(
+  {
+    name: { type: String, required: true },
+    title: { type: String, required: true },
+    description: { type: String, required: true },
+    syllabus: { type: String, required: true },
+    duration: { type: String, required: true },
+    instructor: { type: String, required: true },
+    rating: { type: Number, required: true },
+    price: { type: Number, required: true },
+    image: { type: String, required: true },
+    category: { type: String, required: true },
+    User: { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true }, // Reference to user or instructor
   },
-  title: {
-    type: String,
-    required: true,
-  },
-  description: {
-    type: String,
-    required: true,
-  },
-  syllabus: {
-    type: String,
-    required: true,
-  },
-  duration: {
-    type: String,
-  },
-  instructor: {
-    type: String,
-    required: true,
-  },
-  rating: {
-    type: Number,
-  },
-  image: {
-    type: String,
-  },
-  price: {
-    type: Number,
-    required: true,
-  },
-  category: {
-    type: String,
-    default: "Course",
-  },
-  User: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "user",
-    required: true, // This should typically be required if you are linking with users
-  },
-});
+  { timestamps: true }
+);
 
 // Model declaration
 const course =

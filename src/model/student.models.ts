@@ -6,7 +6,7 @@ interface IStudent extends Document {
   email: string;
   password: string;
   faculty: string;
-  courses: {}[];
+  courses: mongoose.Schema.Types.ObjectId[];
   image: string;
 }
 
@@ -17,7 +17,7 @@ const StudentSchema = new Schema<IStudent>(
     faculty: { type: String },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    courses: [{}],
+    courses: [{ type: mongoose.Schema.Types.ObjectId, ref: "course" }],
     image: { type: String, required: true },
   },
   {

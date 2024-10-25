@@ -4,7 +4,7 @@ const Page = () => {
   return (
     <div className="flex flex-col justify-start m-4 p-4 gap-3">
       <div className="student flex flex-col gap-2">
-        <Link href="">
+        <Link href="/admin/all-student">
           <div className="allStudent p-2 rounded bg-gray-700 hover:bg-gray-600 text-white w-[200px] cursor-pointer">
             All Students
           </div>

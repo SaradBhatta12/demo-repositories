@@ -2,6 +2,7 @@ import connectDB from "@/DB/connectDB";
 import student from "@/model/student.models";
 import getUser from "@/utils/getUserFromCookie";
 import { ImageUpload } from "@/utils/upload";
+import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 // POST: Create a new student
@@ -9,6 +10,8 @@ await connectDB();
 export const POST = async (req: NextRequest) => {
   try {
     const formdata = await req.formData();
+
+    // Extract form data fields
     const name = formdata.get("name");
     const email = formdata.get("email");
     const age = formdata.get("age");
@@ -17,13 +20,13 @@ export const POST = async (req: NextRequest) => {
     const image = formdata.get("image");
     const courses = formdata.get("courses");
 
-    if (!name || !email) {
+    // Validate required fields
+    if (!name || !email || !password) {
       return NextResponse.json({
-        message: "All fields are required",
+        message: "Name, Email, and Password are required",
         status: 400,
       });
     }
-    console.log(name, email, password, age, courses, faculty, image);
 
     // Check if the user is logged in
     const userExist = await getUser();
@@ -34,30 +37,39 @@ export const POST = async (req: NextRequest) => {
       });
     }
 
-    // Check if the student already exists by email or name
+    // Check if the student already exists by email
     const existingStudent = await student.findOne({ email });
-
     if (existingStudent) {
       return NextResponse.json({
-        message: "Student with this email or name already exists",
+        message: "Student with this email already exists",
         status: 400,
       });
     }
 
-    // Upload profile image
+    // Handle image upload if available
     const ProfileImage = image ? await ImageUpload(image as File) : null;
 
-    // Create and save new student
+    // Handle courses selection (assuming courses come as JSON string)
+    let selectedCourses: mongoose.Types.ObjectId[] = [];
+    if (courses) {
+      const parsedCourses = JSON.parse(courses as string);
+      selectedCourses = parsedCourses.map(
+        (courseId: string) => new mongoose.Types.ObjectId(courseId)
+      );
+    }
+
+    // Create a new student object
     const newStudent = new student({
       name,
       age,
       email,
       password,
       faculty,
-      courses,
+      courses: selectedCourses, // Array of ObjectIds
       image: ProfileImage,
     });
 
+    // Save the student to the database
     await newStudent.save();
 
     return NextResponse.json({
@@ -65,7 +77,7 @@ export const POST = async (req: NextRequest) => {
       status: 201,
     });
   } catch (error) {
-    console.error(error);
+    console.error("Error creating student:", error);
     return NextResponse.json({
       message: "Internal server error",
       status: 500,

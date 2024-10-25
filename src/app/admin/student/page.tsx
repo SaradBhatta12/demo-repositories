@@ -20,7 +20,8 @@ interface Course {
 
 const FormPage = () => {
   const [courses, setCourses] = useState<Course[]>([]);
-  const [selectedCourses, setSelectedCourses] = useState<Course[]>([]);
+  const [selectedCourses, setSelectedCourses] = useState<string[]>([]);
+  const [selectedNames, setSelectedNames] = useState<string[]>([]);
   const [formData, setFormData] = useState({
     name: "",
     age: "",
@@ -61,12 +62,16 @@ const FormPage = () => {
 
   // Toggle course selection
   const toggleCourseSelection = (course: Course) => {
-    if (selectedCourses.includes(course)) {
+    if (selectedCourses.includes(course._id)) {
       setSelectedCourses((prevSelected) =>
-        prevSelected.filter((c) => c._id !== course._id)
+        prevSelected.filter((id) => id !== course._id)
+      );
+      setSelectedNames((prevNames) =>
+        prevNames.filter((name) => name !== course.name)
       );
     } else {
-      setSelectedCourses((prevSelected) => [...prevSelected, course]);
+      setSelectedCourses((prevSelected) => [...prevSelected, course._id]);
+      setSelectedNames((prevNames) => [...prevNames, course.name]);
     }
   };
 
@@ -76,7 +81,7 @@ const FormPage = () => {
 
     // Validate form
     if (!formData.name || !formData.email || !formData.password) {
-      toast.error("All fields are required");
+      toast.error("All required fields must be filled");
       return;
     }
 
@@ -87,9 +92,7 @@ const FormPage = () => {
     formdata.append("email", formData.email);
     formdata.append("password", formData.password);
     if (image) formdata.append("image", image);
-
-    // Attach selected courses as JSON
-    formdata.append("courses", selectedCourses);
+    formdata.append("courses", JSON.stringify(selectedCourses)); // Send selected course IDs
 
     try {
       const { data } = await axios.post("/api/admin/student", formdata, {
@@ -99,6 +102,7 @@ const FormPage = () => {
       });
 
       toast.success(data.message);
+      // Reset form after successful submission
       setFormData({
         name: "",
         age: "",
@@ -107,10 +111,11 @@ const FormPage = () => {
         password: "",
       });
       setSelectedCourses([]);
+      setSelectedNames([]);
       setImage(null);
       setImagePreview(null);
-    } catch (error) {
-      toast.error("Failed to submit form");
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || "Failed to submit form");
     }
   };
 
@@ -211,7 +216,7 @@ const FormPage = () => {
                   key={course._id}
                   type="button"
                   className={`border p-2 rounded text-white ${
-                    selectedCourses.includes(course)
+                    selectedCourses.includes(course._id)
                       ? "bg-green-600"
                       : "bg-black hover:bg-gray-900"
                   }`}
@@ -224,12 +229,12 @@ const FormPage = () => {
           </div>
 
           {/* Selected Courses */}
-          {selectedCourses.length > 0 && (
+          {selectedNames.length > 0 && (
             <div className="mb-4 text-white">
               <h3>Selected Courses:</h3>
               <ul>
-                {selectedCourses.map((course) => (
-                  <li key={course._id}>{course.name}</li>
+                {selectedNames.map((name, index) => (
+                  <li key={index}>{name}</li>
                 ))}
               </ul>
             </div>
@@ -252,21 +257,23 @@ const FormPage = () => {
             <div className="mb-4">
               <img
                 src={imagePreview}
-                alt="Image Preview"
-                className="w-32 h-32 object-cover rounded mx-auto"
+                alt="Preview"
+                className="max-w-full h-auto rounded-lg shadow-md"
               />
             </div>
           )}
 
           {/* Submit Button */}
-          <button
-            type="submit"
-            className="w-full bg-gradient-to-r from-indigo-500 to-blue-500 hover:from-indigo-600 hover:to-blue-600 text-white py-3 rounded-md shadow-lg transition duration-300 ease-in-out"
-          >
-            Submit
-          </button>
+          <div>
+            <button
+              type="submit"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+            >
+              Submit
+            </button>
+          </div>
         </form>
-        <Toaster />
+        <Toaster position="top-right" />
       </div>
     </div>
   );

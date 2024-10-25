@@ -96,7 +96,7 @@ const Page: React.FC = () => {
                     />
                   </td>
                   <td className="p-4">
-                    {student.courses.map((course, index) => (
+                    {student?.courses?.map((course, index) => (
                       <span key={index} className="block text-white">
                         {course}
                       </span>

@@ -2,7 +2,7 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import { cookies } from "next/headers";
 
 interface UserDetails extends JwtPayload {
-  userId: string;
+  studentId: string;
 }
 
 const getUser = async (): Promise<string | null> => {
@@ -25,4 +25,23 @@ const getUser = async (): Promise<string | null> => {
   }
 };
 
+export const getUserFromStudent = async () => {
+  try {
+    const student = cookies().get("student")?.value;
+    if (!student) {
+      return null;
+    }
+
+    const userDetails = jwt.verify(
+      student,
+      process.env.JWT_SECRET!
+    ) as UserDetails;
+    const userId = userDetails.studentId;
+
+    return userId;
+  } catch (error) {
+    console.error("Error verifying token:", error);
+    return null;
+  }
+};
 export default getUser;
