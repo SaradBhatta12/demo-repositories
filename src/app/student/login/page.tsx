@@ -40,6 +40,7 @@ const page = () => {
             type="email"
             name="email"
             id="email"
+            required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
@@ -52,6 +53,7 @@ const page = () => {
             className="p-2 text-yellow-100 rounded font-bold bg-transparent border border-pink-200"
             type="password"
             name="password"
+            required
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}

@@ -28,6 +28,19 @@ const Page = () => {
           </div>
         </Link>
       </div>
+
+      <div className="course flex flex-col gap-2">
+        <Link href="/admin/teacher">
+          <div className="addCourse p-2 rounded bg-gray-700 hover:bg-gray-600 text-white w-[200px] cursor-pointer">
+            Add New Teacher
+          </div>
+        </Link>
+        <Link href="/admin/all-teachers">
+          <div className="allCourse p-2 rounded bg-gray-700 hover:bg-gray-600 text-white w-[200px] cursor-pointer">
+            All Teachers
+          </div>
+        </Link>
+      </div>
     </div>
   );
 };

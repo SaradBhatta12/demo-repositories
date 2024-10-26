@@ -1,3 +1,18 @@
 // name , email , phone, address,
 // course 
 // name title, description, department, syllabus,duration, semester 
+
+
+
+// feature 
+-> user able to register and login
+-> user able to add students and course 
+-> user able to create, read, update , and delete students and course
+-> user able to logged out
+-> students able to logged in with the help of provided credentials and able to see their profile and their courses 
+
+
+
+
+student -> course -> cost 
+teacher -> course -> time

@@ -51,7 +51,7 @@ const page = () => {
   if (loading) return <div className="loading">Loading........</div>;
 
   return (
-    <div className="flex justify-center items-center h-screen max-w-full">
+    <div className="flex justify-center flex-col items-center h-screen max-w-full">
       <div className="student-login absolute top-6 right-6">
         <Link href={"/student/login"}>Student Login</Link>
       </div>
@@ -65,6 +65,7 @@ const page = () => {
             type="email"
             name="email"
             id="email"
+            required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
@@ -77,6 +78,7 @@ const page = () => {
             className="p-2 text-yellow-100 rounded font-bold bg-transparent border border-pink-200"
             type="password"
             name="password"
+            required
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -91,6 +93,12 @@ const page = () => {
           </button>
         </div>
       </form>
+      <div className="redirect-register flex mt-5  gap-1">
+        Don't have account
+        <Link href={"/register"} className=" underline">
+          register here.
+        </Link>
+      </div>
     </div>
   );
 };

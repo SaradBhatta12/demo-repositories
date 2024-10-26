@@ -43,6 +43,7 @@ const page = () => {
             type="text"
             name="name"
             id="name"
+            required
             onChange={(e) => setUsername(e.target.value)}
           />
         </div>
@@ -55,6 +56,7 @@ const page = () => {
             type="email"
             name="email"
             id="email"
+            required
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
@@ -67,6 +69,7 @@ const page = () => {
             type="password"
             name="password"
             id="password"
+            required
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
