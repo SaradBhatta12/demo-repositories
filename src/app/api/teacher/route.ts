@@ -1,5 +1,6 @@
 import connectDB from "@/DB/connectDB";
 import teacher from "@/model/teacher.models";
+import User from "@/model/user.models";
 import getUser from "@/utils/getUserFromCookie";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -18,6 +19,14 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
   const user = await getUser();
   if (!user) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
+
+  const Admin = await User.findById(user);
+  if (!Admin.isAdmin) {
+    return NextResponse.json({
+      message: "You are not authorized to create student",
+      status: 401,
+    });
   }
   if (!name || !age || !qualification || !email || !password) {
     return NextResponse.json(
@@ -49,6 +58,14 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
       { message: "Please login to view courses" },
       { status: 401 }
     );
+  }
+
+  const Admin = await User.findById(userid);
+  if (!Admin.isAdmin) {
+    return NextResponse.json({
+      message: "You are not authorized to create student",
+      status: 401,
+    });
   }
   const teachers = await teacher.find();
   return NextResponse.json({

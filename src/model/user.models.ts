@@ -1,34 +1,24 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Document, Model, Schema } from "mongoose";
 
-interface IUser {
+interface IUser extends Document {
   username: string;
   email: string;
   password: string;
   profile: string;
   date: Date;
+  isAdmin: boolean;
 }
 
-const UserSchema = new Schema<IUser>({
-  username: {
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  profile: {
-    type: String,
-  },
-  date: {
-    type: Date,
-    default: Date.now, // Should be a function: Date.now()
-  },
+const UserSchema: Schema<IUser> = new Schema({
+  username: { type: String, required: true },
+  email: { type: String, required: true },
+  password: { type: String, required: true },
+  profile: { type: String },
+  date: { type: Date, default: Date.now },
+  isAdmin: { type: Boolean, default: false },
 });
 
-const User = mongoose.models.User || mongoose.model("User", UserSchema);
+// Check if model exists before defining
+const User: Model<IUser> =
+  mongoose.models.User || mongoose.model<IUser>("User", UserSchema);
 export default User;

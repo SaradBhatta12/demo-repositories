@@ -1,5 +1,6 @@
 import connectDB from "@/DB/connectDB";
 import student from "@/model/student.models";
+import User from "@/model/user.models";
 import getUser from "@/utils/getUserFromCookie";
 import { ImageUpload } from "@/utils/upload";
 import mongoose from "mongoose";
@@ -33,6 +34,14 @@ export const POST = async (req: NextRequest) => {
     if (!userExist) {
       return NextResponse.json({
         message: "Please login to create student",
+        status: 401,
+      });
+    }
+
+    const Admin = await User.findById(userExist);
+    if (!Admin.isAdmin) {
+      return NextResponse.json({
+        message: "You are not authorized to create student",
         status: 401,
       });
     }

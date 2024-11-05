@@ -1,5 +1,6 @@
 import connectDB from "@/DB/connectDB";
 import schedule from "@/model/schedule.models";
+import User from "@/model/user.models";
 import getUser from "@/utils/getUserFromCookie";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -22,6 +23,14 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
         message: "Unauthorized user detected",
         status: 400,
         success: false,
+      });
+    }
+
+    const Admin = await User.findById(user);
+    if (!Admin.isAdmin) {
+      return NextResponse.json({
+        message: "You are not authorized to create student",
+        status: 401,
       });
     }
 

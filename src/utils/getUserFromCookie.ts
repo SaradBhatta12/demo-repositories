@@ -17,7 +17,6 @@ const getUser = async (): Promise<string | null> => {
       process.env.JWT_SECRET!
     ) as UserDetails;
     const userId = userDetails.userId;
-    console.log(userId);
     return userId;
   } catch (error) {
     console.error("Error verifying token:", error);

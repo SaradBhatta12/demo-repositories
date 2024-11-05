@@ -1,6 +1,7 @@
 //get single user by their id
 
 import student from "@/model/student.models";
+import User from "@/model/user.models";
 import getUser from "@/utils/getUserFromCookie";
 import { NextResponse } from "next/server";
 
@@ -26,6 +27,15 @@ export const GET = async (request: Request) => {
         success: false,
       });
     }
+
+    const Admin = await User.findById(adminExist);
+    if (!Admin.isAdmin) {
+      return NextResponse.json({
+        message: "You are not authorized to create student",
+        status: 401,
+      });
+    }
+
     const deletedUser = await student.findByIdAndDelete(id);
     return NextResponse.json({
       message: "Student deleted successfully",

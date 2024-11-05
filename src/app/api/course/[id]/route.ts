@@ -26,6 +26,14 @@ export const PUT = async (req: NextRequest) => {
     });
   }
 
+  const Admin = await user.findById(userExist);
+  if (!Admin.isAdmin) {
+    return NextResponse.json({
+      message: "You are not authorized to create student",
+      status: 401,
+    });
+  }
+
   // Validate the file uploads
   if (!image && !syllabus) {
     return NextResponse.json({
