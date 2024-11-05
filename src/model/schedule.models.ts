@@ -11,6 +11,7 @@ interface Schedule {
   endTime: string;
   teacher: Schema.Types.ObjectId;
   course: Schema.Types.ObjectId;
+  Time: string;
 }
 
 const scheduleSchema = new Schema<Schedule>(
@@ -18,6 +19,7 @@ const scheduleSchema = new Schema<Schedule>(
     title: { type: String, required: true },
     description: { type: String, required: true },
     date: { type: Date, required: true },
+    Time: { type: String, required: true },
     location: { type: String, required: true },
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
