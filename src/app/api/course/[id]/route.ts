@@ -38,12 +38,8 @@ export const PUT = async (req: NextRequest) => {
   const imageUrl = await ImageUpload(image);
   const syllabusUrl = await PdfUpload(syllabus);
 
-  console.log("hhiiiiiii");
-
   // Get the course ID from the URL
   const id = req.nextUrl.pathname.split("/").pop(); // Assuming `id` is the last part of the URL
-
-  console.log(id);
 
   // Update the course details
   const updatedCourses = await course.findByIdAndUpdate(

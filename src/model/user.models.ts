@@ -8,7 +8,7 @@ interface IUser {
   date: Date;
 }
 
-const userSchema = new Schema<IUser>({
+const UserSchema = new Schema<IUser>({
   username: {
     type: String,
     required: true,
@@ -30,5 +30,5 @@ const userSchema = new Schema<IUser>({
   },
 });
 
-const user = mongoose.models.user || mongoose.model("user", userSchema);
-export default user;
+const User = mongoose.models.User || mongoose.model("User", UserSchema);
+export default User;

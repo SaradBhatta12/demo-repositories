@@ -41,3 +41,19 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     newTeacher,
   });
 };
+
+export const GET = async (req: NextRequest, res: NextResponse) => {
+  let userid = await getUser();
+  if (!userid) {
+    return NextResponse.json(
+      { message: "Please login to view courses" },
+      { status: 401 }
+    );
+  }
+  const teachers = await teacher.find();
+  return NextResponse.json({
+    message: "Teachers fetched successfully",
+    teachers,
+    status: 200,
+  });
+};

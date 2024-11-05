@@ -5,35 +5,29 @@ interface Schedule {
   description: string;
   date: Date;
   location: string;
-  startDate: Date;
-  endDate: Date;
   startTime: string;
   endTime: string;
   teacher: Schema.Types.ObjectId;
   course: Schema.Types.ObjectId;
-  Time: string;
 }
 
-const scheduleSchema = new Schema<Schedule>(
+const ScheduleSchema = new Schema<Schedule>(
   {
     title: { type: String, required: true },
     description: { type: String, required: true },
     date: { type: Date, required: true },
-    Time: { type: String, required: true },
     location: { type: String, required: true },
-    startDate: { type: Date, required: true },
-    endDate: { type: Date, required: true },
     startTime: { type: String, required: true },
     endTime: { type: String, required: true },
-    teacher: { type: Schema.Types.ObjectId, ref: "teacher", required: true },
-    course: { type: Schema.Types.ObjectId, ref: "course", required: true },
+    teacher: { type: Schema.Types.ObjectId, ref: "Teacher", required: true },
+    course: { type: Schema.Types.ObjectId, ref: "Course", required: true },
   },
   {
     timestamps: true,
   }
 );
 
-const schedule =
-  mongoose.models.schedule || mongoose.model("schedule", scheduleSchema);
+const Schedule =
+  mongoose.models.Schedule || mongoose.model("Schedule", ScheduleSchema);
 
-export default schedule;
+export default Schedule;

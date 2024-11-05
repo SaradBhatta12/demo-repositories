@@ -1,5 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
+// Define the Teacher interface
 interface Teacher {
   name: string;
   age: number;
@@ -9,7 +10,8 @@ interface Teacher {
   password: string;
 }
 
-const teacherSchema = new Schema<Teacher>(
+// Define the teacher schema
+const TeacherSchema = new Schema<Teacher>(
   {
     name: { type: String, required: true },
     age: { type: Number },
@@ -23,6 +25,8 @@ const teacherSchema = new Schema<Teacher>(
   }
 );
 
-const teacher =
-  mongoose.models.teacher || mongoose.model("teacher", teacherSchema);
-export default teacher;
+// Model declaration
+const Teacher =
+  mongoose.models.Teacher || mongoose.model("Teacher", TeacherSchema);
+
+export default Teacher;

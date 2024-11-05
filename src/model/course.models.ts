@@ -12,12 +12,12 @@ interface Course extends Document {
   image: string;
   price: number;
   category: string;
-  User: mongoose.Types.ObjectId;
-  Student: mongoose.Types.ObjectId[];
+  User: mongoose.Types.ObjectId; // Reference to User model
+  Student: mongoose.Types.ObjectId[]; // Reference to Student model
 }
 
 // Define the course schema
-const courseSchema: Schema = new Schema<Course>(
+const CourseSchema: Schema = new Schema<Course>(
   {
     name: { type: String, required: true },
     title: { type: String, required: true },
@@ -29,14 +29,14 @@ const courseSchema: Schema = new Schema<Course>(
     price: { type: Number, required: true },
     image: { type: String, required: true },
     category: { type: String, required: true },
-    User: { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true }, // Reference to user or instructor
-    Student: [{ type: mongoose.Schema.Types.ObjectId, ref: "student" }], // Reference to student
+    User: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // Reference to User
+    Student: [{ type: mongoose.Schema.Types.ObjectId, ref: "Student" }], // Reference to Student
   },
   { timestamps: true }
 );
 
 // Model declaration
-const course =
-  mongoose.models.course || mongoose.model<Course>("course", courseSchema);
+const Course =
+  mongoose.models.Course || mongoose.model<Course>("Course", CourseSchema);
 
-export default course;
+export default Course;

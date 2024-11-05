@@ -16,3 +16,15 @@
 
 student -> course -> cost 
 teacher -> course -> time
+
+
+
+///error 
+-> Schema name should be started with capital letter
+-> Model name should be started with capital letter
+-> 
+
+
+
+//Today learning 
+-> agrigation pipelines

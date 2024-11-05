@@ -17,7 +17,7 @@ const StudentSchema = new Schema<IStudent>(
     faculty: { type: String },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    courses: [{ type: mongoose.Schema.Types.ObjectId, ref: "course" }],
+    courses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }],
     image: { type: String, required: true },
   },
   {
@@ -25,7 +25,7 @@ const StudentSchema = new Schema<IStudent>(
   }
 );
 
-const student =
-  mongoose.models.student || mongoose.model<IStudent>("student", StudentSchema);
+const Student =
+  mongoose.models.Student || mongoose.model<IStudent>("Student", StudentSchema);
 
-export default student;
+export default Student;
