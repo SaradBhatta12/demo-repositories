@@ -70,7 +70,7 @@ const Page: React.FC = () => {
     <div className="min-h-screen flex items-center justify-center bg-[#000000] px-4 py-6">
       <form
         onSubmit={handleSubmit}
-        className="bg-[#1F1F1F] p-8 rounded-lg shadow-lg w-full max-w-4xl space-y-6"
+        className="bg-[#1F2937] p-8 rounded-lg shadow-lg w-full max-w-4xl space-y-6"
       >
         <h2 className="text-2xl font-bold text-white mb-4 text-center">
           Add a New Course
@@ -86,7 +86,7 @@ const Page: React.FC = () => {
               id="name"
               value={formData.name}
               onChange={handleChange}
-              className="w-full p-3 rounded border border-gray-600 bg-transparent text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full p-3 rounded border border-gray-600 bg-[#374151]  text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Enter course name"
             />
           </div>
@@ -101,7 +101,7 @@ const Page: React.FC = () => {
               id="title"
               value={formData.title}
               onChange={handleChange}
-              className="w-full p-3 rounded border border-gray-600 bg-transparent text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full p-3 rounded border border-gray-600 bg-[#374151]  text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Enter course title"
             />
           </div>
@@ -115,7 +115,7 @@ const Page: React.FC = () => {
               id="description"
               value={formData.description}
               onChange={handleChange}
-              className="w-full p-3 rounded border border-gray-600 bg-transparent text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full p-3 rounded border border-gray-600 bg-[#374151]  text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Enter course description"
               rows={4}
             />
@@ -123,42 +123,8 @@ const Page: React.FC = () => {
 
           <div className="space-y-2">
             <label
-              htmlFor="syllabus"
-              className="block text-gray-300 flex items-center"
-            >
-              <FaFileUpload className="mr-2" /> Syllabus
-            </label>
-            <input
-              type="file"
-              name="syllabus"
-              id="syllabus"
-              onChange={handleFileChange}
-              className="w-full text-black file:border border-gray-600 bg-transparent file:border-none file:rounded-lg file:text-gray-300 file:cursor-pointer focus:outline-none border border-dotted p-4 rounded"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label
-              htmlFor="duration"
-              className="block text-gray-300 flex items-center"
-            >
-              <FaClock className="mr-2" /> Duration
-            </label>
-            <input
-              type="text"
-              name="duration"
-              id="duration"
-              value={formData.duration}
-              onChange={handleChange}
-              className="w-full p-3 rounded border border-gray-600 bg-transparent text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="Enter course duration"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label
               htmlFor="instructor"
-              className="block text-gray-300 flex items-center"
+              className=" text-gray-300 flex items-center"
             >
               <FaUser className="mr-2" /> Instructor
             </label>
@@ -168,16 +134,47 @@ const Page: React.FC = () => {
               id="instructor"
               value={formData.instructor}
               onChange={handleChange}
-              className="w-full p-3 rounded border border-gray-600 bg-transparent text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full p-3 rounded border border-gray-600 bg-[#374151]  text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Enter instructor name"
             />
           </div>
 
           <div className="space-y-2">
             <label
-              htmlFor="image"
-              className="block text-gray-300 flex items-center"
+              htmlFor="duration"
+              className=" text-gray-300 flex items-center"
             >
+              <FaClock className="mr-2" /> Duration
+            </label>
+            <input
+              type="text"
+              name="duration"
+              id="duration"
+              value={formData.duration}
+              onChange={handleChange}
+              className="w-full p-3 rounded border border-gray-600 bg-[#374151]  text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              placeholder="Enter course duration"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label
+              htmlFor="syllabus"
+              className=" text-gray-300 flex items-center"
+            >
+              <FaFileUpload className="mr-2" /> Syllabus
+            </label>
+            <input
+              type="file"
+              name="syllabus"
+              id="syllabus"
+              onChange={handleFileChange}
+              className="w-full  file:border border-gray-600 bg-[#374151]  file:border-none file:rounded-lg  file:cursor-pointer focus:outline-none border border-dotted p-4 rounded"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label htmlFor="image" className=" text-gray-300 flex items-center">
               <FaImage className="mr-2" /> Featured Image
             </label>
             <input
@@ -185,7 +182,7 @@ const Page: React.FC = () => {
               name="image"
               id="image"
               onChange={handleFileChange}
-              className="w-full text-black file:border border-gray-600 bg-transparent file:border-none file:rounded-lg file:text-gray-300 file:cursor-pointer focus:outline-none border border-dotted p-4 rounded"
+              className="w-full  file:border border-gray-600 bg-[#374151]  file:border-none file:rounded-lg file:cursor-pointer focus:outline-none border border-dotted p-4 rounded"
             />
           </div>
 
@@ -199,7 +196,7 @@ const Page: React.FC = () => {
               id="price"
               value={formData.price}
               onChange={handleChange}
-              className="w-full p-3 rounded border border-gray-600 bg-transparent text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full p-3 rounded border border-gray-600 bg-[#374151]  text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Enter price"
             />
           </div>

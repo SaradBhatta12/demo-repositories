@@ -51,6 +51,7 @@ const Page = memo(() => {
   const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [courses, setCourses] = useState<Course[]>([]);
   const [schedules, setSchedules] = useState<Schedule[]>([]);
+  console.log(schedules);
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchTeachers = useCallback(async () => {
@@ -261,7 +262,7 @@ const Page = memo(() => {
           Your Schedules
         </h2>
         <div className="space-y-4">
-          {schedules.map((schedule) => {
+          {schedules?.map((schedule) => {
             // Find the teacher and course objects by ID
             const teacher = teachers.find((t) => t._id === schedule.teacher);
             const course = courses.find((c) => c._id === schedule.course);

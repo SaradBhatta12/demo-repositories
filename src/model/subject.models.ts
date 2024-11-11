@@ -5,13 +5,10 @@ interface ISubject {
   subjectCode: string;
   units: number;
   semester: number;
-  studyMeterial: string[];
+  studyMaterial: string[];
   referenceBook: string[];
-  course: mongoose.Types.ObjectId;
-  Student: mongoose.Types.ObjectId[];
   description: string;
   syllabus: string;
-  assignment: mongoose.Types.ObjectId[];
 }
 
 const subjectSchema = new mongoose.Schema<ISubject>({
@@ -19,13 +16,10 @@ const subjectSchema = new mongoose.Schema<ISubject>({
   subjectCode: { type: String, required: true },
   units: { type: Number },
   semester: { type: Number },
-  studyMeterial: { type: [String] },
+  studyMaterial: { type: [String] },
   referenceBook: { type: [String] },
-  course: { type: mongoose.Schema.Types.ObjectId, ref: "Course" },
-  Student: [{ type: mongoose.Schema.Types.ObjectId, ref: "Student" }],
   description: { type: String, required: true },
   syllabus: { type: String },
-  assignment: [{ type: mongoose.Schema.Types.ObjectId, ref: "Assignment" }],
 });
 
 const Subject =

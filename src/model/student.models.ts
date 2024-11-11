@@ -1,5 +1,7 @@
 import mongoose, { Document, Schema } from "mongoose";
 
+//main foucus is here
+
 interface IStudent extends Document {
   name: string;
   age: number;
@@ -7,7 +9,9 @@ interface IStudent extends Document {
   password: string;
   faculty: string;
   courses: mongoose.Schema.Types.ObjectId[];
+  subjects: mongoose.Schema.Types.ObjectId[];
   image: string;
+  semester: number;
 }
 
 const StudentSchema = new Schema<IStudent>(
@@ -18,13 +22,14 @@ const StudentSchema = new Schema<IStudent>(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     courses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }],
+    subjects: [{ type: mongoose.Schema.Types.ObjectId, ref: "Subject" }],
     image: { type: String, required: true },
+    semester: { type: Number },
   },
   {
     timestamps: true,
   }
 );
-
 const Student =
   mongoose.models.Student || mongoose.model<IStudent>("Student", StudentSchema);
 

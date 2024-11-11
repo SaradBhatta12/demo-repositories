@@ -61,7 +61,7 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
   }
 
   const Admin = await User.findById(userid);
-  if (!Admin.isAdmin) {
+  if (!Admin?.isAdmin) {
     return NextResponse.json({
       message: "You are not authorized to create student",
       status: 401,

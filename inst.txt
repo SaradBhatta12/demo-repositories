@@ -31,3 +31,20 @@ teacher -> course -> time
 
 
 course -> subject -> 
+
+
+
+each student -> course -> students 
+             ->        -> 
+
+
+             student -> 1-course -> multiple-subjects
+
+
+
+             course create 
+             student create 
+             subject create 
+
+
+             grouping -> studentProfile -> create by filling form 

@@ -10,8 +10,8 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
   const UserExist = await user.findOne({ email: email });
   if (!UserExist)
     NextResponse.json({ message: "User Not Found" }, { status: 404 });
-  if (UserExist.password !== password)
+  if (UserExist?.password !== password)
     NextResponse.json({ message: "Invalid Credentials" }, { status: 401 });
-  await setCookie(UserExist._id);
+  await setCookie(UserExist?._id as string);
   return NextResponse.json({ message: "Login Success" }, { status: 200 });
 };

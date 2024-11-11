@@ -27,7 +27,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     }
 
     const Admin = await User.findById(user);
-    if (!Admin.isAdmin) {
+    if (!Admin?.isAdmin) {
       return NextResponse.json({
         message: "You are not authorized to create student",
         status: 401,
@@ -77,10 +77,41 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 
 export const GET = async (req: NextRequest, res: NextResponse) => {
   try {
-    const schedules = await schedule
-      .find({})
-      .populate("teacher", "name")
-      .populate("course", "name"); // Populate the Course model
+    const schedules = await schedule.aggregate([
+      {
+        $lookup: {
+          from: "teachers", // Collection name for teachers
+          localField: "teacher",
+          foreignField: "_id",
+          as: "teacher",
+        },
+      },
+      { $unwind: "$teacher" },
+      {
+        $lookup: {
+          from: "courses", // Collection name for courses
+          localField: "course",
+          foreignField: "_id",
+          as: "course",
+        },
+      },
+      { $unwind: "$course" },
+      {
+        $project: {
+          _id: 1,
+          title: 1,
+          description: 1,
+          location: 1,
+          startTime: 1,
+          endTime: 1,
+          date: 1, // If you want to include date
+          time: 1, // If you want to include time
+          "teacher.name": 1,
+          "teacher.email": 1,
+          "course.name": 1,
+        },
+      },
+    ]);
 
     return NextResponse.json({
       message: "Schedules fetched successfully",

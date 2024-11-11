@@ -66,6 +66,40 @@ const Page = () => {
               </div>
             </Link>
           </div>
+
+          {/* Schedule Section  */}
+          <div className="space-y-2">
+            <h3 className="text-lg font-semibold text-gray-300 flex items-center gap-2">
+              <FaChalkboardTeacher /> Schedule
+            </h3>
+            <Link href="/admin/schedule">
+              <div className="p-2 rounded bg-gray-700 hover:bg-gray-600 cursor-pointer text-sm flex items-center gap-2">
+                <FaChalkboardTeacher /> Add Schedule
+              </div>
+            </Link>
+            <Link href="/schedule">
+              <div className="p-2 rounded bg-gray-700 hover:bg-gray-600 cursor-pointer text-sm flex items-center gap-2">
+                <FaChalkboardTeacher /> Show Schedule
+              </div>
+            </Link>
+          </div>
+
+          {/* Subject Section  */}
+          <div className="space-y-2">
+            <h3 className="text-lg font-semibold text-gray-300 flex items-center gap-2">
+              <FaChalkboardTeacher /> Subject
+            </h3>
+            <Link href="/admin/subject">
+              <div className="p-2 rounded bg-gray-700 hover:bg-gray-600 cursor-pointer text-sm flex items-center gap-2">
+                <FaChalkboardTeacher /> Add Subject
+              </div>
+            </Link>
+            <Link href="/schedule">
+              <div className="p-2 rounded bg-gray-700 hover:bg-gray-600 cursor-pointer text-sm flex items-center gap-2">
+                <FaChalkboardTeacher /> Show all subject
+              </div>
+            </Link>
+          </div>
         </div>
       </div>
 
