@@ -11,7 +11,7 @@ interface ISubject {
   syllabus: string;
 }
 
-const subjectSchema = new mongoose.Schema<ISubject>({
+const SubjectSchema = new mongoose.Schema<ISubject>({
   name: { type: String, required: true },
   subjectCode: { type: String, required: true },
   units: { type: Number },
@@ -23,5 +23,5 @@ const subjectSchema = new mongoose.Schema<ISubject>({
 });
 
 const Subject =
-  mongoose.models.Subject || mongoose.model<ISubject>("Subject", subjectSchema);
+  mongoose.models.Subject || mongoose.model<ISubject>("Subject", SubjectSchema);
 export default Subject;

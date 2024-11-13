@@ -1,5 +1,5 @@
 import connectDB from "@/DB/connectDB";
-import student from "@/model/student.models";
+import { default as Student, default as student } from "@/model/student.models";
 import { getUserFromStudent } from "@/utils/getUserFromCookie";
 import setStudent from "@/utils/setStudent";
 import { NextRequest, NextResponse } from "next/server";
@@ -18,15 +18,53 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
   return NextResponse.json({ message: "Login successful" }, { status: 200 });
 };
 
-export const GET = async (req: NextRequest, res: NextResponse) => {
-  const studentId = await getUserFromStudent();
-  if (!studentId) {
-    return NextResponse.json({ message: "Student not found" }, { status: 404 });
+export const GET = async (req: NextRequest) => {
+  await connectDB();
+
+  try {
+    // Retrieve student ID for the authenticated user
+    const studentId = await getUserFromStudent();
+    if (!studentId) {
+      return NextResponse.json(
+        { message: "Student not found" },
+        { status: 404 }
+      );
+    }
+
+    // Find the student by ID
+    const studentData = await Student.findById(studentId)
+      .populate({
+        path: "Profile", // Profile is a field in the Student model that is referenced
+        model: "Profile", // Ensure 'Profile' is the correct model name for the Profile collection
+        populate: [
+          { path: "student", model: "Student" }, // Populate student field in Profile
+          {
+            path: "course", // Assuming 'course' is an ObjectId in the Profile collection referencing the Course model
+            model: "Course",
+            // populate: {
+            //   path: "subjects", // Assuming 'subjects' is a field in Course that is an array of ObjectIds referencing the Subject model
+            //   model: "Subject",
+            // },
+          },
+        ],
+        options: { strictPopulate: false },
+      })
+      .exec();
+
+    if (!studentData) {
+      return NextResponse.json(
+        { message: "Student not found" },
+        { status: 404 }
+      );
+    }
+
+    // Return the populated student data
+    return NextResponse.json({ user: studentData, status: 200 });
+  } catch (error) {
+    console.error("Error fetching student data:", error);
+    return NextResponse.json(
+      { message: "Internal Server Error", success: false },
+      { status: 500 }
+    );
   }
-  const user = await student.findById(studentId);
-  //also populate the courses
-  if (!user) {
-    return NextResponse.json({ message: "Student not found" }, { status: 404 });
-  }
-  return NextResponse.json({ user, status: 200 });
 };

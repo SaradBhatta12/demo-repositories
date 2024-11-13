@@ -8,6 +8,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (req: NextRequest) => {
   await connectDB();
+
   try {
     const { student, course } = await req.json();
 
@@ -22,9 +23,7 @@ export const POST = async (req: NextRequest) => {
           message: "Invalid student or course ID format",
           success: false,
         },
-        {
-          status: 400,
-        }
+        { status: 400 }
       );
     }
 
@@ -32,26 +31,16 @@ export const POST = async (req: NextRequest) => {
     const user = await getUser();
     if (!user) {
       return NextResponse.json(
-        {
-          message: "Unauthorized user",
-          success: false,
-        },
-        {
-          status: 401,
-        }
+        { message: "Unauthorized user", success: false },
+        { status: 401 }
       );
     }
 
     const ISAdmin = await User.findById(user);
     if (!ISAdmin?.isAdmin) {
       return NextResponse.json(
-        {
-          message: "Unauthorized user",
-          success: false,
-        },
-        {
-          status: 403,
-        }
+        { message: "Unauthorized user", success: false },
+        { status: 403 }
       );
     }
 
@@ -60,15 +49,11 @@ export const POST = async (req: NextRequest) => {
       student: studentId,
       course: courseId,
     });
+
     if (existingProfile) {
       return NextResponse.json(
-        {
-          message: "Profile already exists",
-          success: false,
-        },
-        {
-          status: 400,
-        }
+        { message: "Profile already exists", success: false },
+        { status: 400 }
       );
     }
 
@@ -80,30 +65,22 @@ export const POST = async (req: NextRequest) => {
 
     if (!newProfile) {
       return NextResponse.json(
-        {
-          message: "Failed to create profile",
-          success: false,
-        },
-        {
-          status: 500,
-        }
+        { message: "Failed to create profile", success: false },
+        { status: 500 }
       );
     }
 
     // Update the student's Profile field with the new profile ID
-    let updatedStudent = await Student.findById(studentId);
-    if (updatedStudent) {
-      updatedStudent.profile.push(newProfile._id);
-      await updatedStudent.save();
-    } else {
+    const updatedStudent = await Student.findByIdAndUpdate(
+      studentId,
+      { $set: { Profile: newProfile._id } },
+      { new: true }
+    );
+
+    if (!updatedStudent) {
       return NextResponse.json(
-        {
-          message: "Student not found",
-          success: false,
-        },
-        {
-          status: 404,
-        }
+        { message: "Student not found", success: false },
+        { status: 404 }
       );
     }
 
@@ -113,36 +90,33 @@ export const POST = async (req: NextRequest) => {
         success: true,
         student: updatedStudent,
       },
-      {
-        status: 201,
-      }
+      { status: 201 }
     );
   } catch (error) {
     console.error("Error creating profile:", error);
     return NextResponse.json(
-      {
-        message: "Internal Server Error",
-        success: false,
-      },
-      {
-        status: 500,
-      }
+      { message: "Internal Server Error", success: false },
+      { status: 500 }
     );
   }
 };
 
 export const GET = async (req: NextRequest) => {
   await connectDB();
+
   const user = await getUser();
   if (!user) {
     return NextResponse.json(
-      {
-        message: "Unauthorized user",
-        success: false,
-      },
-      {
-        status: 404,
-      }
+      { message: "Unauthorized user", success: false },
+      { status: 404 }
+    );
+  }
+
+  const isAdmin = await User.findById(user);
+  if (!isAdmin?.isAdmin) {
+    return NextResponse.json(
+      { message: "Unauthorized user", success: false },
+      { status: 404 }
     );
   }
 
@@ -150,14 +124,9 @@ export const GET = async (req: NextRequest) => {
     .populate("student")
     .populate("course")
     .populate("subject");
+
   return NextResponse.json(
-    {
-      message: "All profiles",
-      success: true,
-      profiles,
-    },
-    {
-      status: 200,
-    }
+    { message: "All profiles", success: true, profiles },
+    { status: 200 }
   );
 };

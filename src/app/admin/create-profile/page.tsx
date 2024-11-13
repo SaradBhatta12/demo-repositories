@@ -57,11 +57,10 @@ const page = () => {
         if (response.data.success) {
           toaset.success(response.data.message || "Successfully enrolled");
         } else {
-          toaset.error(response.data.message || "Failed to create profile");
+          toaset.error(response.data.message);
         }
       } catch (error: any) {
-        console.error("Error submitting form", error);
-        toast.error("Failed to create profile");
+        toast.error(error.response.data.message || "something went to wrong ");
       } finally {
         setSubmitting(false);
       }
