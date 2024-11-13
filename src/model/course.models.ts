@@ -20,17 +20,17 @@ interface Course extends Document {
 const CourseSchema: Schema = new Schema<Course>(
   {
     name: { type: String, required: true },
-    title: { type: String, required: true },
-    description: { type: String, required: true },
-    syllabus: { type: String, required: true },
-    duration: { type: String, required: true },
+    title: { type: String },
+    description: { type: String },
+    syllabus: { type: String },
+    duration: { type: String },
     instructor: { type: String },
     price: { type: Number, required: true },
-    image: { type: String, required: true },
+    image: { type: String },
     Student: [{ type: mongoose.Schema.Types.ObjectId, ref: "Student" }], // Reference to Student
     subjects: [{ type: mongoose.Schema.Types.ObjectId, ref: "Subject" }], // Reference to Subject
-    noOfSemesters: { type: Number, required: true },
-    noOfSubjects: { type: Number, required: true },
+    noOfSemesters: { type: Number },
+    noOfSubjects: { type: Number },
   },
   { timestamps: true }
 );

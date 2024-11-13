@@ -8,8 +8,8 @@ interface IStudent extends Document {
   email: string;
   password: string;
   faculty: string;
-  courses: mongoose.Schema.Types.ObjectId[];
-  subjects: mongoose.Schema.Types.ObjectId[];
+  Profile: mongoose.Schema.Types.ObjectId;
+  profile: mongoose.Schema.Types.ObjectId[];
   image: string;
   semester: number;
 }
@@ -21,8 +21,12 @@ const StudentSchema = new Schema<IStudent>(
     faculty: { type: String },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    courses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }],
-    subjects: [{ type: mongoose.Schema.Types.ObjectId, ref: "Subject" }],
+    profile: [{ type: mongoose.Schema.Types.ObjectId, ref: "Profile" }],
+    Profile: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Profile",
+      required: true,
+    },
     image: { type: String, required: true },
     semester: { type: Number },
   },

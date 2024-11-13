@@ -35,7 +35,7 @@ export const POST = async (req: NextRequest) => {
     });
 
     // Set cookie
-    await setCookie(newUser._id);
+    await setCookie(newUser._id as string);
 
     // Return success response
     return NextResponse.json({

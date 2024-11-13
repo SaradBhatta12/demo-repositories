@@ -1,10 +1,8 @@
 "use client";
-import { useState } from "react";
-
-interface Option {
-  id: string;
-  name: string;
-}
+import Loading from "@/app/components/Loading";
+import axios from "axios";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import toaset, { toast, Toaster } from "react-hot-toast";
 
 interface STUDENT {
   _id: string;
@@ -17,92 +15,147 @@ interface COURSE {
 }
 
 const page = () => {
-  const [formData, setFormData] = useState({
-    student: "",
-    course: "",
-    subject: "",
-  });
+  const [student, setStudent] = useState<string>("");
+  const [course, setCourse] = useState<string>("");
+  const [courses, setCourses] = useState<COURSE[]>([]);
+  const [students, setStudents] = useState<STUDENT[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [submitting, setSubmitting] = useState<boolean>(false);
+  console.log(course);
 
-  // Dummy data for students, courses, and subjects
-  const students: Option[] = [
-    { id: "1", name: "John Doe" },
-    { id: "2", name: "Jane Smith" },
-    { id: "3", name: "Emily Johnson" },
-  ];
-
-  const courses: Option[] = [
-    { id: "1", name: "Computer Science" },
-    { id: "2", name: "Mechanical Engineering" },
-    { id: "3", name: "Civil Engineering" },
-  ];
-
-  // Handle form input changes
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-  };
+  // Fetch courses and students data
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const [courseResponse, studentResponse] = await Promise.all([
+          axios.get("/api/course"),
+          axios.get("/api/student/allstudents"),
+        ]);
+        setCourses(courseResponse.data.courses);
+        setStudents(studentResponse.data.students);
+      } catch (error) {
+        console.error("Error fetching data", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
 
   // Handle form submission
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    alert("Profile created successfully!");
-  };
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+      setSubmitting(true);
+      try {
+        const response = await axios.post("/api/profile/create", {
+          student,
+          course,
+        });
+
+        if (response.data.success) {
+          toaset.success(response.data.message || "Successfully enrolled");
+        } else {
+          toaset.error(response.data.message || "Failed to create profile");
+        }
+      } catch (error: any) {
+        console.error("Error submitting form", error);
+        toast.error("Failed to create profile");
+      } finally {
+        setSubmitting(false);
+      }
+    },
+    [student, course]
+  );
+
+  // Memoize student and course options
+  const studentOptions = useMemo(
+    () =>
+      students?.map((student) => (
+        <option key={student._id} value={student._id}>
+          {student.email}
+        </option>
+      )),
+    [students]
+  );
+
+  const courseOptions = useMemo(
+    () =>
+      courses?.map((course) => (
+        <option key={course._id} value={course._id}>
+          {course.name}
+        </option>
+      )),
+    [courses]
+  );
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-black p-6">
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-b from-gray-900 to-black p-6">
+      <Toaster />
       <form
         onSubmit={handleSubmit}
-        className="bg-gray-900 text-white shadow-md rounded-lg p-8 max-w-lg w-full space-y-6"
+        className="bg-gray-800 text-white shadow-lg rounded-lg p-8 max-w-lg w-full space-y-6"
       >
         <h2 className="text-3xl font-semibold text-center mb-6">
           Create Profile
         </h2>
 
-        {/* Student Select */}
-        <div className="students">
-          <label htmlFor="student" className="block text-xl font-medium">
-            Student
-          </label>
-          <select
-            name="student"
-            id="student"
-            value={formData.student}
-            onChange={handleChange}
-            className="mt-2 w-full p-4 bg-gray-800 text-white border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="">Select Student</option>
-            {students.map((option) => (
-              <option key={option.id} value={option.id}>
-                {option.name}
-              </option>
-            ))}
-          </select>
-        </div>
+        {loading ? (
+          <div className="flex justify-center items-center">
+            <Loading />
+          </div>
+        ) : (
+          <>
+            {/* Student Select */}
+            <div className="students">
+              <label
+                htmlFor="student"
+                className="block text-xl font-medium mb-2"
+              >
+                Student
+              </label>
+              <select
+                name="student"
+                id="student"
+                value={student}
+                onChange={(e) => setStudent(e.target.value)}
+                className="w-full p-4 bg-gray-700 text-white border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Select Student</option>
+                {studentOptions}
+              </select>
+            </div>
 
-        {/* Course Select */}
-        <div className="course">
-          <label htmlFor="course" className="block text-xl font-medium">
-            Course
-          </label>
-          <select
-            name="course"
-            id="course"
-            value={formData.course}
-            onChange={handleChange}
-            className="mt-2 w-full p-4 bg-gray-800 text-white border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="">Select Course</option>
-            {courses.map((option) => (
-              <option key={option.id} value={option.id}>
-                {option.name}
-              </option>
-            ))}
-          </select>
-        </div>
+            {/* Course Select */}
+            <div className="course">
+              <label
+                htmlFor="course"
+                className="block text-xl font-medium mb-2"
+              >
+                Course
+              </label>
+              <select
+                name="course"
+                id="course"
+                value={course}
+                onChange={(e) => setCourse(e.target.value)}
+                className="w-full p-4 bg-gray-700 text-white border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Select Course</option>
+                {courseOptions}
+              </select>
+            </div>
 
-        <button className="p-3 bg-blue-800 text-center w-full rounded ">
-          Create Profile
-        </button>
+            <button
+              type="submit"
+              className="p-3 bg-blue-600 hover:bg-blue-700 text-center w-full rounded-lg font-semibold transition-colors duration-300"
+              disabled={submitting}
+            >
+              {submitting ? "Creating Profile..." : "Create Profile"}
+            </button>
+          </>
+        )}
       </form>
     </div>
   );

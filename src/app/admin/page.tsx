@@ -16,6 +16,57 @@ const Page = () => {
 
         {/* Navigation Links */}
         <div className="space-y-4">
+          {/* Subject Section */}
+          <div className="space-y-2">
+            <h3 className="text-lg font-semibold text-gray-300 flex items-center gap-2">
+              <FaChalkboardTeacher /> Subject
+            </h3>
+            <Link href="/admin/subject">
+              <div className="p-2 rounded bg-gray-700 hover:bg-gray-600 cursor-pointer text-sm flex items-center gap-2">
+                <FaChalkboardTeacher /> Add Subject
+              </div>
+            </Link>
+            <Link href="/admin/all-subjects">
+              <div className="p-2 rounded bg-gray-700 hover:bg-gray-600 cursor-pointer text-sm flex items-center gap-2">
+                <FaChalkboardTeacher /> Show All Subjects
+              </div>
+            </Link>
+          </div>
+
+          {/* Teachers Section */}
+          <div className="space-y-2">
+            <h3 className="text-lg font-semibold text-gray-300 flex items-center gap-2">
+              <FaChalkboardTeacher /> Teachers
+            </h3>
+            <Link href="/admin/teacher">
+              <div className="p-2 rounded bg-gray-700 hover:bg-gray-600 cursor-pointer text-sm flex items-center gap-2">
+                <FaChalkboardTeacher /> Add New Teacher
+              </div>
+            </Link>
+            <Link href="/admin/all-teachers">
+              <div className="p-2 rounded bg-gray-700 hover:bg-gray-600 cursor-pointer text-sm flex items-center gap-2">
+                <FaChalkboardTeacher /> All Teachers
+              </div>
+            </Link>
+          </div>
+
+          {/* Schedule Section */}
+          <div className="space-y-2">
+            <h3 className="text-lg font-semibold text-gray-300 flex items-center gap-2">
+              <FaChalkboardTeacher /> Schedule
+            </h3>
+            <Link href="/admin/schedule">
+              <div className="p-2 rounded bg-gray-700 hover:bg-gray-600 cursor-pointer text-sm flex items-center gap-2">
+                <FaChalkboardTeacher /> Add Schedule
+              </div>
+            </Link>
+            <Link href="/schedule">
+              <div className="p-2 rounded bg-gray-700 hover:bg-gray-600 cursor-pointer text-sm flex items-center gap-2">
+                <FaChalkboardTeacher /> Show Schedule
+              </div>
+            </Link>
+          </div>
+
           {/* Students Section */}
           <div className="space-y-2">
             <h3 className="text-lg font-semibold text-gray-300 flex items-center gap-2">
@@ -50,53 +101,19 @@ const Page = () => {
             </Link>
           </div>
 
-          {/* Teachers Section */}
+          {/* Course Handover Section */}
           <div className="space-y-2">
             <h3 className="text-lg font-semibold text-gray-300 flex items-center gap-2">
-              <FaChalkboardTeacher /> Teachers
+              <FaChalkboardTeacher /> Course Handover
             </h3>
-            <Link href="/admin/teacher">
+            <Link href="/admin/create-profile">
               <div className="p-2 rounded bg-gray-700 hover:bg-gray-600 cursor-pointer text-sm flex items-center gap-2">
-                <FaChalkboardTeacher /> Add New Teacher
+                <FaChalkboardTeacher /> Course Handover
               </div>
             </Link>
-            <Link href="/admin/all-teachers">
+            <Link href="/admin/all-course-handover">
               <div className="p-2 rounded bg-gray-700 hover:bg-gray-600 cursor-pointer text-sm flex items-center gap-2">
-                <FaChalkboardTeacher /> All Teachers
-              </div>
-            </Link>
-          </div>
-
-          {/* Schedule Section  */}
-          <div className="space-y-2">
-            <h3 className="text-lg font-semibold text-gray-300 flex items-center gap-2">
-              <FaChalkboardTeacher /> Schedule
-            </h3>
-            <Link href="/admin/schedule">
-              <div className="p-2 rounded bg-gray-700 hover:bg-gray-600 cursor-pointer text-sm flex items-center gap-2">
-                <FaChalkboardTeacher /> Add Schedule
-              </div>
-            </Link>
-            <Link href="/schedule">
-              <div className="p-2 rounded bg-gray-700 hover:bg-gray-600 cursor-pointer text-sm flex items-center gap-2">
-                <FaChalkboardTeacher /> Show Schedule
-              </div>
-            </Link>
-          </div>
-
-          {/* Subject Section  */}
-          <div className="space-y-2">
-            <h3 className="text-lg font-semibold text-gray-300 flex items-center gap-2">
-              <FaChalkboardTeacher /> Subject
-            </h3>
-            <Link href="/admin/subject">
-              <div className="p-2 rounded bg-gray-700 hover:bg-gray-600 cursor-pointer text-sm flex items-center gap-2">
-                <FaChalkboardTeacher /> Add Subject
-              </div>
-            </Link>
-            <Link href="/schedule">
-              <div className="p-2 rounded bg-gray-700 hover:bg-gray-600 cursor-pointer text-sm flex items-center gap-2">
-                <FaChalkboardTeacher /> Show all subject
+                <FaChalkboardTeacher /> All Course Handover
               </div>
             </Link>
           </div>

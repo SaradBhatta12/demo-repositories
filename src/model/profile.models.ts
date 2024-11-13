@@ -3,7 +3,6 @@ import mongoose from "mongoose";
 interface PROFILE {
   student: mongoose.Types.ObjectId;
   course: mongoose.Types.ObjectId;
-  subject: mongoose.Types.ObjectId[];
 }
 
 const ProfileSchema = new mongoose.Schema<PROFILE>(
@@ -18,13 +17,6 @@ const ProfileSchema = new mongoose.Schema<PROFILE>(
       ref: "Course",
       required: true,
     },
-    subject: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Subject",
-        required: true,
-      },
-    ],
   },
   {
     timestamps: true,

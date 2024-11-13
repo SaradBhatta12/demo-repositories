@@ -19,6 +19,10 @@ export const POST = async (req: NextRequest) => {
   const description = formData.get("description");
   const syllabus = formData.get("syllabus");
   const assignment = formData.get("assignment");
+  const noOfSubjects = formData.get("noOfSubjects");
+  const noOfSemesters = formData.get("noOfSemesters");
+  const subjectsInNumber = parseInt(noOfSubjects as string, 10);
+  const semestersInNumber = parseInt(noOfSemesters as string, 10);
 
   if (!name || !subjectCode || !units || !semester) {
     return NextResponse.json({
@@ -62,6 +66,8 @@ export const POST = async (req: NextRequest) => {
     description,
     syllabus: syllabusPdf,
     assignment,
+    noOfSubjects: subjectsInNumber,
+    noOfSemesters: semestersInNumber,
   });
   return NextResponse.json({
     message: "Subject created successfully",

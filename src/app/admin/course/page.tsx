@@ -1,9 +1,13 @@
 "use client";
 import axios from "axios";
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { FaClock, FaFileUpload, FaImage, FaUser } from "react-icons/fa";
 
+interface SUBJECT {
+  _id: string;
+  name: string;
+}
 const Page: React.FC = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -11,10 +15,43 @@ const Page: React.FC = () => {
     description: "",
     duration: "",
     instructor: "",
+    noOfSubjects: 0,
+    noOfSemesters: 0,
     price: "",
   });
+
   const [syllabus, setSyllabus] = useState<File | null>(null);
   const [image, setImage] = useState<File | null>(null);
+  const [subjects, setSubjects] = useState<SUBJECT[]>([]);
+  const [sub, setSub] = useState<string[]>([]);
+
+  const handleSubjectClick = (subjectId: string) => {
+    setSub((prevSub) => {
+      if (prevSub.includes(subjectId)) {
+        // Remove subject ID if it's already in the array
+        return prevSub.filter((id) => id !== subjectId);
+      } else {
+        // Add subject ID if it's not in the array
+        return [...prevSub, subjectId];
+      }
+    });
+  };
+  useEffect(() => {
+    const fetchSubjects = async () => {
+      try {
+        const response = await axios.get("/api/subject/create");
+        if (response.data.success) {
+          setSubjects(response.data.subjects);
+        } else {
+          console.error("Error fetching subjects:", response.data.message);
+        }
+      } catch (error) {
+        console.error("Error fetching subjects:", error);
+      }
+    };
+
+    fetchSubjects();
+  }, []);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -44,6 +81,9 @@ const Page: React.FC = () => {
     formdata.append("duration", formData.duration);
     formdata.append("instructor", formData.instructor);
     formdata.append("price", formData.price);
+    formdata.append("noOfSemesters", formData.noOfSemesters.toString());
+    formdata.append("noOfSubjects", formData.noOfSubjects.toString());
+    formdata.append("subjects", JSON.stringify(sub));
 
     if (syllabus) {
       formdata.append("syllabus", syllabus);
@@ -121,6 +161,29 @@ const Page: React.FC = () => {
             />
           </div>
 
+          <div className="space-y-2 col-span-1 md:col-span-2">
+            <label htmlFor="subjects" className="block text-gray-300">
+              Subjects
+            </label>
+            <div className="w-full p-3 rounded border border-gray-600 bg-[#374151] text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 flex flex-wrap gap-2 cursor-pointer">
+              {subjects?.map((subj) => (
+                <div
+                  key={subj._id}
+                  className={`p-2 rounded w-fit ${
+                    sub.includes(subj._id) ? "bg-green-600" : "bg-pink-600"
+                  } text-white`}
+                  onClick={() => handleSubjectClick(subj._id)}
+                >
+                  {subj.name}
+                </div>
+              ))}
+            </div>
+            {/* Debugging output */}
+            <div className="mt-4 text-gray-300">
+              Selected Subject IDs: {sub.join(", ")}
+            </div>
+          </div>
+
           <div className="space-y-2">
             <label
               htmlFor="instructor"
@@ -133,6 +196,42 @@ const Page: React.FC = () => {
               name="instructor"
               id="instructor"
               value={formData.instructor}
+              onChange={handleChange}
+              className="w-full p-3 rounded border border-gray-600 bg-[#374151]  text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              placeholder="Enter instructor name"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label
+              htmlFor="noOfSemesters"
+              className=" text-gray-300 flex items-center"
+            >
+              <FaUser className="mr-2" /> No of semesters
+            </label>
+            <input
+              type="number"
+              name="noOfSemesters"
+              id="noOfSemesters"
+              value={formData.noOfSemesters}
+              onChange={handleChange}
+              className="w-full p-3 rounded border border-gray-600 bg-[#374151]  text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              placeholder="Enter instructor name"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label
+              htmlFor="noOfSubjects"
+              className=" text-gray-300 flex items-center"
+            >
+              <FaUser className="mr-2" /> No of subjects
+            </label>
+            <input
+              type="number"
+              name="noOfSubjects"
+              id="noOfSubjects"
+              value={formData.noOfSubjects}
               onChange={handleChange}
               className="w-full p-3 rounded border border-gray-600 bg-[#374151]  text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Enter instructor name"
