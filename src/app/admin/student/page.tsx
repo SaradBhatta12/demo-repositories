@@ -18,7 +18,7 @@ interface Course {
 
 const FormPage = () => {
   const [courses, setCourses] = useState<Course[]>([]);
-  const [selectedCourses, setSelectedCourses] = useState<string[]>([]);
+  const [selectedCourse, setSelectedCourse] = useState<string>("");
   const [selectedNames, setSelectedNames] = useState<string[]>([]);
   const [formData, setFormData] = useState({
     name: "",
@@ -53,15 +53,11 @@ const FormPage = () => {
       setImagePreview(URL.createObjectURL(file));
     }
   };
-  const toggleCourseSelection = (course: Course) => {
-    if (selectedCourses.includes(course._id)) {
-      setSelectedCourses((prev) => prev.filter((id) => id !== course._id));
-      setSelectedNames((prev) => prev.filter((name) => name !== course.name));
-    } else {
-      setSelectedCourses((prev) => [...prev, course._id]);
-      setSelectedNames((prev) => [...prev, course.name]);
-    }
+
+  const toggleCourseSelection = async (id: string) => {
+    setSelectedCourse(id);
   };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const formdata = new FormData();
@@ -71,14 +67,14 @@ const FormPage = () => {
     formdata.append("email", formData.email);
     formdata.append("password", formData.password);
     if (image) formdata.append("image", image);
-    formdata.append("courses", JSON.stringify(selectedCourses));
+    formdata.append("course", selectedCourse);
     try {
       const { data } = await axios.post("/api/admin/student", formdata, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       toast.success(data.message);
       setFormData({ name: "", age: "", faculty: "", email: "", password: "" });
-      setSelectedCourses([]);
+      setSelectedCourse("");
       setSelectedNames([]);
       setImage(null);
       setImagePreview(null);
@@ -166,11 +162,11 @@ const FormPage = () => {
                   key={course._id}
                   type="button"
                   className={`p-2 rounded-md text-white transition ${
-                    selectedCourses.includes(course._id)
+                    selectedCourse === course._id
                       ? "bg-green-600"
                       : "bg-gray-700 hover:bg-gray-800"
                   }`}
-                  onClick={() => toggleCourseSelection(course)}
+                  onClick={() => toggleCourseSelection(course._id)}
                 >
                   {course.name}
                 </button>

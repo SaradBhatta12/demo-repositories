@@ -9,6 +9,7 @@ interface IStudent extends Document {
   password: string;
   faculty: string;
   Profile: mongoose.Schema.Types.ObjectId;
+  Course: mongoose.Schema.Types.ObjectId;
   image: string;
   semester: number;
 }
@@ -23,6 +24,11 @@ const StudentSchema = new Schema<IStudent>(
     Profile: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Profile",
+    },
+    Course: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Course",
+      required: true,
     },
     image: { type: String, required: true },
     semester: { type: Number },

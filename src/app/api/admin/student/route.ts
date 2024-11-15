@@ -8,89 +8,95 @@ import { NextRequest, NextResponse } from "next/server";
 
 // POST: Create a new student
 await connectDB();
+
 export const POST = async (req: NextRequest) => {
   try {
-    const formdata = await req.formData();
+    // Parse form data
+    const formData = await req.formData();
 
-    // Extract form data fields
-    const name = formdata.get("name");
-    const email = formdata.get("email");
-    const age = formdata.get("age");
-    const password = formdata.get("password");
-    const faculty = formdata.get("faculty");
-    const image = formdata.get("image");
-    const courses = formdata.get("courses");
+    // Extract form fields
+    const name = formData.get("name") as string;
+    const email = formData.get("email") as string;
+    const age = formData.get("age") as string | null;
+    const password = formData.get("password") as string;
+    const faculty = formData.get("faculty") as string | null;
+    const image = formData.get("image") as File | null;
+    const course = formData.get("course") as string | null;
 
+    console.log(course);
     // Validate required fields
     if (!name || !email || !password) {
-      return NextResponse.json({
-        message: "Name, Email, and Password are required",
-        status: 400,
-      });
-    }
-
-    // Check if the user is logged in
-    const userExist = await getUser();
-    if (!userExist) {
-      return NextResponse.json({
-        message: "Please login to create student",
-        status: 401,
-      });
-    }
-
-    const Admin = await User.findById(userExist);
-    if (!Admin.isAdmin) {
-      return NextResponse.json({
-        message: "You are not authorized to create student",
-        status: 401,
-      });
-    }
-
-    // Check if the student already exists by email
-    const existingStudent = await student.findOne({ email });
-    if (existingStudent) {
-      return NextResponse.json({
-        message: "Student with this email already exists",
-        status: 400,
-      });
-    }
-
-    // Handle image upload if available
-    const ProfileImage = image ? await ImageUpload(image as File) : null;
-
-    // Handle courses selection (assuming courses come as JSON string)
-    let selectedCourses: mongoose.Types.ObjectId[] = [];
-    if (courses) {
-      const parsedCourses = JSON.parse(courses as string);
-      selectedCourses = parsedCourses.map(
-        (courseId: string) => new mongoose.Types.ObjectId(courseId)
+      return NextResponse.json(
+        { message: "Name, Email, and Password are required" },
+        { status: 400 }
       );
     }
 
-    // Create a new student object
+    // Authenticate the user
+    const userExist = await getUser();
+    if (!userExist) {
+      return NextResponse.json(
+        { message: "Please login to create a student" },
+        { status: 401 }
+      );
+    }
+
+    // Check admin privileges
+    const admin = await User.findById(userExist);
+    if (!admin?.isAdmin) {
+      return NextResponse.json(
+        { message: "You are not authorized to create a student" },
+        { status: 403 }
+      );
+    }
+
+    // Check for existing student by email
+    const existingStudent = await student.findOne({ email });
+    if (existingStudent) {
+      return NextResponse.json(
+        { message: "Student with this email already exists" },
+        { status: 409 }
+      );
+    }
+
+    // Handle image upload if provided
+    const profileImage = image ? await ImageUpload(image) : null;
+
+    // Convert course ID if provided
+    const courseID = course ? new mongoose.Types.ObjectId(course) : null;
+
+    // Create and save the new student
     const newStudent = new student({
       name,
       age,
       email,
       password,
       faculty,
-      courses: selectedCourses, // Array of ObjectIds
-      image: ProfileImage,
+      Course: courseID,
+      image: profileImage,
     });
 
-    // Save the student to the database
     await newStudent.save();
 
-    return NextResponse.json({
-      message: "Student created successfully",
-      status: 201,
-    });
-  } catch (error) {
+    return NextResponse.json(
+      { message: "Student created successfully" },
+      { status: 201 }
+    );
+  } catch (error: any) {
     console.error("Error creating student:", error);
-    return NextResponse.json({
-      message: "Internal server error",
-      status: 500,
-    });
+
+    // Handle Mongoose ObjectId casting errors gracefully
+    if (error.name === "CastError" && error.kind === "ObjectId") {
+      return NextResponse.json(
+        { message: "Invalid Course ID" },
+        { status: 400 }
+      );
+    }
+
+    return NextResponse.json(
+      { message: "Internal server error" },
+      { status: 500 }
+    );
   }
 };
 

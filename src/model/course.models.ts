@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 // Define the Course interface, extending from Document for mongoose types
-interface Course extends Document {
+interface ICourse extends Document {
   name: string;
   title: string;
   description: string;
@@ -16,7 +16,7 @@ interface Course extends Document {
 }
 
 // Define the course schema
-const CourseSchema: Schema = new Schema<Course>(
+const CourseSchema: Schema = new Schema<ICourse>(
   {
     name: { type: String, required: true },
     title: { type: String },
@@ -35,6 +35,6 @@ const CourseSchema: Schema = new Schema<Course>(
 
 // Model declaration
 const Course =
-  mongoose.models.Course || mongoose.model<Course>("Course", CourseSchema);
+  mongoose.models.Course || mongoose.model<ICourse>("Course", CourseSchema);
 
 export default Course;
