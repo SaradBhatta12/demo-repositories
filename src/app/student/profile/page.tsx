@@ -9,8 +9,16 @@ import { BsPersonFill } from "react-icons/bs";
 
 // TypeScript interfaces for better type safety
 interface Subject {
-  code: string;
   name: string;
+  code: string;
+  subjectCode: string;
+  units: number;
+  semester: number;
+  description: string;
+  referenceBook: string[];
+  studyMaterial: string[];
+  syllabus: string;
+  _id: string;
 }
 
 interface Student {
@@ -28,6 +36,9 @@ interface Student {
 
 const ProfilePage: FC = () => {
   const [student, setStudent] = useState<Student | null>(null);
+  const [course, setCourse] = useState();
+  const [subject, setSubject] = useState<Subject[]>([]);
+  console.log(student);
   const [loading, setLoading] = useState<boolean>(true); // Loading state
   const [error, setError] = useState<string | null>(null); // Error state
   const router = useRouter();
@@ -116,14 +127,18 @@ const ProfilePage: FC = () => {
 
         {/* Courses and Subjects Section */}
         <div className="w-full p-8 bg-gray-700">
-          <h3 className="text-2xl font-semibold mb-6 text-center text-yellow-300">Subjects</h3>
+          <h3 className="text-2xl font-semibold mb-6 text-center text-yellow-300">
+            Subjects
+          </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {subjects?.map((subject) => (
               <div
                 key={subject.code}
                 className="bg-gray-800 p-6 rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-200"
               >
-                <h4 className="text-lg font-semibold text-yellow-300">{subject.name}</h4>
+                <h4 className="text-lg font-semibold text-yellow-300">
+                  {subject.name}
+                </h4>
                 <p className="text-gray-400 mt-2">Code: {subject.code}</p>
               </div>
             ))}

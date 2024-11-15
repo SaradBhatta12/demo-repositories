@@ -7,7 +7,6 @@ interface Course extends Document {
   description: string;
   syllabus: string;
   duration: string;
-  instructor: string; //remove later
   image: string;
   price: number;
   noOfSemesters: number;
@@ -24,7 +23,6 @@ const CourseSchema: Schema = new Schema<Course>(
     description: { type: String },
     syllabus: { type: String },
     duration: { type: String },
-    instructor: { type: String },
     price: { type: Number, required: true },
     image: { type: String },
     Student: [{ type: mongoose.Schema.Types.ObjectId, ref: "Student" }], // Reference to Student

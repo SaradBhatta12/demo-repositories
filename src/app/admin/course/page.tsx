@@ -186,24 +186,6 @@ const Page: React.FC = () => {
 
           <div className="space-y-2">
             <label
-              htmlFor="instructor"
-              className=" text-gray-300 flex items-center"
-            >
-              <FaUser className="mr-2" /> Instructor
-            </label>
-            <input
-              type="text"
-              name="instructor"
-              id="instructor"
-              value={formData.instructor}
-              onChange={handleChange}
-              className="w-full p-3 rounded border border-gray-600 bg-[#374151]  text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="Enter instructor name"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label
               htmlFor="noOfSemesters"
               className=" text-gray-300 flex items-center"
             >

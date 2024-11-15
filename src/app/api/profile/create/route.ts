@@ -45,10 +45,13 @@ export const POST = async (req: NextRequest) => {
     }
 
     // Check if profile already exists
-    const existingProfile = await Profile.findOne({
-      student: studentId,
-      course: courseId,
-    });
+    const existingProfile =
+      (await Profile.findOne({
+        course: courseId,
+      })) ||
+      (await Profile.findOne({
+        student: studentId,
+      }));
 
     if (existingProfile) {
       return NextResponse.json(

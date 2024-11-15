@@ -32,24 +32,24 @@ export const GET = async (req: NextRequest) => {
     }
 
     // Find the student by ID
-    const studentData = await Student.findById(studentId)
-      .populate({
-        path: "Profile", // Profile is a field in the Student model that is referenced
-        model: "Profile", // Ensure 'Profile' is the correct model name for the Profile collection
-        populate: [
-          { path: "student", model: "Student" }, // Populate student field in Profile
-          {
-            path: "course", // Assuming 'course' is an ObjectId in the Profile collection referencing the Course model
-            model: "Course",
-            // populate: {
-            //   path: "subjects", // Assuming 'subjects' is a field in Course that is an array of ObjectIds referencing the Subject model
-            //   model: "Subject",
-            // },
-          },
-        ],
-        options: { strictPopulate: false },
-      })
-      .exec();
+    const studentData = await Student.findById(studentId);
+    // .populate({
+    //   path: "Profile", // Profile is a field in the Student model that is referenced
+    //   model: "Profile", // Ensure 'Profile' is the correct model name for the Profile collection
+    //   populate: [
+    //     { path: "student", model: "Student" }, // Populate student field in Profile
+    //     {
+    //       path: "course", // Assuming 'course' is an ObjectId in the Profile collection referencing the Course model
+    //       model: "Course",
+    //       populate: {
+    //         path: "subjects",
+    //         model: "Subject",
+    //       },
+    //     },
+    //   ],
+    //   options: { strictPopulate: false },
+    // })
+    // .exec();
 
     if (!studentData) {
       return NextResponse.json(

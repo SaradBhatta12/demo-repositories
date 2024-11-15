@@ -1,11 +1,13 @@
-import mongoose from "mongoose";
+import mongoose, { Document, Model } from "mongoose";
 
-interface PROFILE {
+// Define the interface for the profile document, without Mongoose-specific types
+interface IProfile extends Document {
   student: mongoose.Types.ObjectId;
   course: mongoose.Types.ObjectId;
 }
 
-const ProfileSchema = new mongoose.Schema<PROFILE>(
+// Define the schema for the Profile model
+const ProfileSchema = new mongoose.Schema<IProfile>(
   {
     student: {
       type: mongoose.Schema.Types.ObjectId,
@@ -23,6 +25,8 @@ const ProfileSchema = new mongoose.Schema<PROFILE>(
   }
 );
 
-const Profile =
-  mongoose.models.Profile || mongoose.model<PROFILE>("Profile", ProfileSchema);
+// Define the model with TypeScript, ensuring type safety
+const Profile: Model<IProfile> =
+  mongoose.models.Profile || mongoose.model<IProfile>("Profile", ProfileSchema);
+
 export default Profile;
