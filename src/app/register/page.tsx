@@ -1,10 +1,12 @@
 "use client";
+
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import { FiLoader } from "react-icons/fi";
 
-const page = () => {
+const RegisterPage = () => {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const [username, setUsername] = useState<string>("");
@@ -13,78 +15,105 @@ const page = () => {
 
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!username || !email || !password) {
+      toast.error("All fields are required!");
+      return;
+    }
+
     try {
+      setLoading(true);
       const response = await axios.post("/api/auth/register", {
         username,
         email,
         password,
       });
-      router.push("/login");
+      setLoading(false);
       toast.success(response.data.message);
+      router.push("/login");
     } catch (error: any) {
-      console.log(error);
+      setLoading(false);
+      console.error(error);
       toast.error(error?.response?.data?.error || "Internal Server Error");
     }
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center h-screen bg-gray-900">
+        <FiLoader className="text-pink-500 animate-spin text-6xl" />
+      </div>
+    );
   }
 
   return (
-    <div className="flex justify-center items-center h-screen max-w-full">
-      <form action="POST" onSubmit={submitHandler}>
-        <div className="flex flex-col ">
-          <label htmlFor="name" className="text-xl p-1">
-            Username
-          </label>
-          <input
-            className="p-2 text-yellow-100 rounded font-bold bg-transparent border border-pink-200"
-            type="text"
-            name="name"
-            id="name"
-            required
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </div>
-        <div className="flex flex-col ">
-          <label htmlFor="email" className="text-xl p-1">
-            Email
-          </label>
-          <input
-            className="p-2 text-yellow-100 rounded font-bold bg-transparent border border-pink-200"
-            type="email"
-            name="email"
-            id="email"
-            required
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <div className="flex flex-col ">
-          <label htmlFor="password" className="text-xl p-1">
-            Password
-          </label>
-          <input
-            className="p-2 text-yellow-100 rounded font-bold bg-transparent border border-pink-200"
-            type="password"
-            name="password"
-            id="password"
-            required
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <div>
+    <div className="flex justify-center items-center h-screen bg-gray-900">
+      <div className="w-full max-w-md p-6 bg-gray-800 rounded-lg shadow-md">
+        <h1 className="text-2xl font-semibold text-center text-gray-200 mb-6">
+          Register
+        </h1>
+        <form onSubmit={submitHandler}>
+          <div className="flex flex-col mb-4">
+            <label htmlFor="username" className="text-gray-300 mb-2">
+              Username
+            </label>
+            <input
+              id="username"
+              type="text"
+              className="p-3 bg-gray-700 text-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-pink-500"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </div>
+          <div className="flex flex-col mb-4">
+            <label htmlFor="email" className="text-gray-300 mb-2">
+              Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              className="p-3 bg-gray-700 text-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-pink-500"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className="flex flex-col mb-6">
+            <label htmlFor="password" className="text-gray-300 mb-2">
+              Password
+            </label>
+            <input
+              id="password"
+              type="password"
+              className="p-3 bg-gray-700 text-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-pink-500"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
           <button
             type="submit"
-            className="text-xl border p-2 rounded mt-4 hover:bg-gray-900"
+            className="w-full bg-pink-500 text-white py-2 rounded-lg text-lg hover:bg-pink-600 transition"
           >
             Submit
           </button>
+        </form>
+        <div className="mt-6 text-center">
+          <p className="text-gray-400">
+            Already have an account?{" "}
+            <span
+              className="text-pink-400 hover:underline cursor-pointer"
+              onClick={() => router.push("/login")}
+            >
+              Login
+            </span>
+          </p>
         </div>
-      </form>
+      </div>
       <Toaster />
     </div>
   );
 };
 
-export default page;
+export default RegisterPage;

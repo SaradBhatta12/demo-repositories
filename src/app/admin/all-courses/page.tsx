@@ -65,7 +65,7 @@ const page = () => {
           </thead>
           {courses.map((course) => {
             return (
-              <tbody className="bg-gray-900">
+              <tbody key={course._id} className="bg-gray-900">
                 <tr className="border-b border-gray-700">
                   <td className="p-4">{course.name}</td>
                   <td className="p-4">{course.description}</td>
@@ -79,26 +79,26 @@ const page = () => {
                     />
                   </td>
                   <td className="p-4">
-                    <a
-                      href={course.pdf}
+                    <Link
+                      href={`${course.pdf}`}
                       className="text-blue-500 hover:underline h-5 w-5 "
                       target="_blank"
                       rel="noopener noreferrer"
                     >
                       Download PDF
-                    </a>
+                    </Link>
                   </td>
                   <td className="p-4">$99</td>
-                  <Link href={`/admin/course/${course._id}`}>
-                    <td
-                      className="p-4 cursor-pointer"
-                      onChange={(e: React.MouseEvent<HTMLTableCellElement>) => {
-                        e.preventDefault();
-                      }}
-                    >
+                  <td
+                    className="p-4 cursor-pointer"
+                    onChange={(e: React.MouseEvent<HTMLTableCellElement>) => {
+                      e.preventDefault();
+                    }}
+                  >
+                    <Link href={`/admin/course/${course._id}`}>
                       <CiEdit />
-                    </td>
-                  </Link>
+                    </Link>
+                  </td>
                   <td
                     className="p-4 cursor-pointer"
                     onClick={(e: React.MouseEvent<HTMLTableCellElement>) => {

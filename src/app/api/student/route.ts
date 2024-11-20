@@ -32,17 +32,7 @@ export const GET = async (req: NextRequest) => {
     }
 
     // Find the student by ID
-    const studentData = await Student.findById(studentId)
-      .populate({
-        path: "Course",
-        model: "Course",
-        populate: {
-          path: "subjects",
-          model: "Subject",
-        },
-      })
-      .exec();
-
+    const studentData = await Student.findById(studentId).exec();
     console.log(studentData);
     if (!studentData) {
       return NextResponse.json(

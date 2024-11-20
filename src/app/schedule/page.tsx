@@ -47,8 +47,8 @@ const Page = () => {
   };
 
   return (
-    <div className="overflow-x-auto px-4 py-6">
-      <div ref={tableRef} className="overflow-x-auto">
+    <div className="overflow-x-hidden px-4 py-6">
+      <div ref={tableRef} className="overflow-x-scroll">
         <table className="min-w-full  border border-gray-200 shadow-lg">
           <thead>
             <tr className="bg-blue-500 text-white">

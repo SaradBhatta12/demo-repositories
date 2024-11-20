@@ -51,7 +51,6 @@ const Page = memo(() => {
   const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [courses, setCourses] = useState<Course[]>([]);
   const [schedules, setSchedules] = useState<Schedule[]>([]);
-  console.log(schedules);
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchTeachers = useCallback(async () => {

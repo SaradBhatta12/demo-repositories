@@ -38,7 +38,6 @@ const ProfilePage: FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  console.log(student);
   useEffect(() => {
     const getStudent = async () => {
       try {
@@ -98,8 +97,8 @@ const ProfilePage: FC = () => {
               <Image
                 src={studentData.image}
                 alt="Profile Picture"
-                layout="fill"
-                objectFit="cover"
+                fill
+                style={{ objectFit: "cover" }}
                 priority={true}
               />
             </div>

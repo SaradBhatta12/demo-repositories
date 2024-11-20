@@ -1,135 +1,130 @@
 import Link from "next/link";
-import { AiOutlineUser } from "react-icons/ai";
-import { FaBook, FaChalkboardTeacher, FaUserGraduate } from "react-icons/fa";
+import {
+  FaFacebook,
+  FaGooglePlus,
+  FaLinkedin,
+  FaTwitter,
+} from "react-icons/fa";
+import { FiBell, FiMessageSquare } from "react-icons/fi";
 
-const Page = () => {
+const Home: React.FC = () => {
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-gray-900 text-white">
+    <div className="flex min-h-screen bg-black">
       {/* Sidebar */}
-      <div className="p-4 w-full md:w-1/4 lg:w-1/5 bg-gray-800">
-        {/* Admin Profile */}
-        <div className="mb-6 p-4 bg-gray-700 rounded-lg flex flex-col items-center text-center">
-          <AiOutlineUser size={50} className="text-gray-300" />
-          <h2 className="text-xl font-semibold mt-2">Admin Name</h2>
-          <p className="text-gray-400 text-sm">admin@example.com</p>
-        </div>
-
-        {/* Navigation Links */}
-        <div className="space-y-4">
-          {/* Subject Section */}
-          <div className="space-y-2">
-            <h3 className="text-lg font-semibold text-gray-300 flex items-center gap-2">
-              <FaChalkboardTeacher /> Subject
-            </h3>
-            <Link href="/admin/subject">
-              <div className="p-2 rounded bg-gray-700 hover:bg-gray-600 cursor-pointer text-sm flex items-center gap-2">
-                <FaChalkboardTeacher /> Add Subject
-              </div>
-            </Link>
-            <Link href="/admin/all-subjects">
-              <div className="p-2 rounded bg-gray-700 hover:bg-gray-600 cursor-pointer text-sm flex items-center gap-2">
-                <FaChalkboardTeacher /> Show All Subjects
-              </div>
-            </Link>
-          </div>
-
-          {/* Teachers Section */}
-          <div className="space-y-2">
-            <h3 className="text-lg font-semibold text-gray-300 flex items-center gap-2">
-              <FaChalkboardTeacher /> Teachers
-            </h3>
-            <Link href="/admin/teacher">
-              <div className="p-2 rounded bg-gray-700 hover:bg-gray-600 cursor-pointer text-sm flex items-center gap-2">
-                <FaChalkboardTeacher /> Add New Teacher
-              </div>
-            </Link>
-            <Link href="/admin/all-teachers">
-              <div className="p-2 rounded bg-gray-700 hover:bg-gray-600 cursor-pointer text-sm flex items-center gap-2">
-                <FaChalkboardTeacher /> All Teachers
-              </div>
-            </Link>
-          </div>
-
-          {/* Schedule Section */}
-          <div className="space-y-2">
-            <h3 className="text-lg font-semibold text-gray-300 flex items-center gap-2">
-              <FaChalkboardTeacher /> Schedule
-            </h3>
-            <Link href="/admin/schedule">
-              <div className="p-2 rounded bg-gray-700 hover:bg-gray-600 cursor-pointer text-sm flex items-center gap-2">
-                <FaChalkboardTeacher /> Add Schedule
-              </div>
-            </Link>
-            <Link href="/schedule">
-              <div className="p-2 rounded bg-gray-700 hover:bg-gray-600 cursor-pointer text-sm flex items-center gap-2">
-                <FaChalkboardTeacher /> Show Schedule
-              </div>
-            </Link>
-          </div>
-
-          {/* Students Section */}
-          <div className="space-y-2">
-            <h3 className="text-lg font-semibold text-gray-300 flex items-center gap-2">
-              <FaUserGraduate /> Students
-            </h3>
-            <Link href="/admin/all-student">
-              <div className="p-2 rounded bg-gray-700 hover:bg-gray-600 cursor-pointer text-sm flex items-center gap-2">
-                <FaUserGraduate /> All Students
-              </div>
-            </Link>
-            <Link href="/admin/student">
-              <div className="p-2 rounded bg-gray-700 hover:bg-gray-600 cursor-pointer text-sm flex items-center gap-2">
-                <FaUserGraduate /> Add New Student
-              </div>
-            </Link>
-          </div>
-
-          {/* Courses Section */}
-          <div className="space-y-2">
-            <h3 className="text-lg font-semibold text-gray-300 flex items-center gap-2">
-              <FaBook /> Courses
-            </h3>
-            <Link href="/admin/course">
-              <div className="p-2 rounded bg-gray-700 hover:bg-gray-600 cursor-pointer text-sm flex items-center gap-2">
-                <FaBook /> Add New Course
-              </div>
-            </Link>
-            <Link href="/admin/all-courses">
-              <div className="p-2 rounded bg-gray-700 hover:bg-gray-600 cursor-pointer text-sm flex items-center gap-2">
-                <FaBook /> All Courses
-              </div>
-            </Link>
-          </div>
-
-          {/* Course Handover Section */}
-          <div className="space-y-2">
-            <h3 className="text-lg font-semibold text-gray-300 flex items-center gap-2">
-              <FaChalkboardTeacher /> Course Handover
-            </h3>
-            <Link href="/admin/create-profile">
-              <div className="p-2 rounded bg-gray-700 hover:bg-gray-600 cursor-pointer text-sm flex items-center gap-2">
-                <FaChalkboardTeacher /> Course Handover
-              </div>
-            </Link>
-            <Link href="/admin/all-course-handover">
-              <div className="p-2 rounded bg-gray-700 hover:bg-gray-600 cursor-pointer text-sm flex items-center gap-2">
-                <FaChalkboardTeacher /> All Course Handover
-              </div>
-            </Link>
+      <div className="w-64 bg-gray-900 text-white p-6">
+        <div className="flex items-center space-x-4 mb-6">
+          <img
+            src="/profile.jpg"
+            alt="User Profile"
+            className="w-12 h-12 rounded-full border-2 border-gray-700"
+          />
+          <div>
+            <p className="font-semibold text-lg">John David</p>
+            <span className="text-green-500">Online</span>
           </div>
         </div>
+        <nav>
+          <ul className="space-y-4">
+            <li>
+              <Link
+                href="#"
+                className="block py-2 px-4 rounded-lg hover:bg-gray-800 transition"
+              >
+                Dashboard
+              </Link>
+            </li>
+            <li>
+              <a
+                href="#"
+                className="block py-2 px-4 rounded-lg hover:bg-gray-800 transition"
+              >
+                Widgets
+              </a>
+            </li>
+          </ul>
+        </nav>
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 p-6">
-        <h1 className="text-2xl font-bold mb-4">Admin Dashboard</h1>
-        <p className="text-gray-400">
-          Welcome to the admin panel. Use the navigation menu on the left to
-          manage students, courses, and teachers.
-        </p>
+      <div className="flex-1 bg-gray-800 p-6">
+        {/* Header */}
+        <header className="flex justify-between items-center p-4 bg-gray-900 shadow-md rounded-lg">
+          <div className="flex items-center space-x-2">
+            <h1 className="text-2xl font-semibold text-white">Dashboard</h1>
+          </div>
+          <div className="flex items-center space-x-4">
+            <button className="text-xl text-white hover:text-gray-400 transition">
+              <FiBell />
+            </button>
+            <button className="text-xl text-white hover:text-gray-400 transition">
+              <FiMessageSquare />
+            </button>
+          </div>
+        </header>
+
+        {/* Dashboard Content */}
+        <div className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* Metric Boxes */}
+          <div className="bg-gray-900 shadow-lg p-6 rounded-lg flex items-center justify-between hover:bg-gray-700 transition">
+            <div>
+              <p className="text-gray-400">Welcome</p>
+              <p className="text-2xl font-semibold text-white">2500</p>
+            </div>
+          </div>
+          <div className="bg-gray-900 shadow-lg p-6 rounded-lg flex items-center justify-between hover:bg-gray-700 transition">
+            <div>
+              <p className="text-gray-400">Average Time</p>
+              <p className="text-2xl font-semibold text-white">123.50</p>
+            </div>
+          </div>
+          <div className="bg-gray-900 shadow-lg p-6 rounded-lg flex items-center justify-between hover:bg-gray-700 transition">
+            <div>
+              <p className="text-gray-400">Collections</p>
+              <p className="text-2xl font-semibold text-white">1,805</p>
+            </div>
+          </div>
+          <div className="bg-gray-900 shadow-lg p-6 rounded-lg flex items-center justify-between hover:bg-gray-700 transition">
+            <div>
+              <p className="text-gray-400">Comments</p>
+              <p className="text-2xl font-semibold text-white">54</p>
+            </div>
+          </div>
+
+          {/* Social Media Stats */}
+          <div className="col-span-1 md:col-span-2 lg:col-span-1 bg-gray-900 p-6 shadow-lg rounded-lg">
+            <div className="flex items-center justify-between mb-4 hover:bg-gray-700 transition">
+              <FaFacebook className="text-blue-600 text-3xl" />
+              <div>
+                <p className="text-gray-400">Facebook</p>
+                <p className="font-semibold text-white">35k Friends</p>
+              </div>
+            </div>
+            <div className="flex items-center justify-between mb-4 hover:bg-gray-700 transition">
+              <FaTwitter className="text-blue-400 text-3xl" />
+              <div>
+                <p className="text-gray-400">Twitter</p>
+                <p className="font-semibold text-white">584k Followers</p>
+              </div>
+            </div>
+            <div className="flex items-center justify-between mb-4 hover:bg-gray-700 transition">
+              <FaLinkedin className="text-blue-700 text-3xl" />
+              <div>
+                <p className="text-gray-400">LinkedIn</p>
+                <p className="font-semibold text-white">758+ Contacts</p>
+              </div>
+            </div>
+            <div className="flex items-center justify-between hover:bg-gray-700 transition">
+              <FaGooglePlus className="text-red-500 text-3xl" />
+              <div>
+                <p className="text-gray-400">Google+</p>
+                <p className="font-semibold text-white">450 Followers</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
-export default Page;
+export default Home;
