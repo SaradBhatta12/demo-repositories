@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@panva/jose": "^1.9.3",
     "@types/bcrypt": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.7",
     "axios": "^1.7.7",

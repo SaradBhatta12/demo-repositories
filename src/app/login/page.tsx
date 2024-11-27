@@ -4,7 +4,7 @@ import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { FaSpinner } from "react-icons/fa";
 
 const LoginPage = () => {
@@ -33,7 +33,7 @@ const LoginPage = () => {
       const response = await axios.post("/api/auth/login", { email, password });
       toast.success(response.data.message);
       setLoading(false);
-      router.push("/");
+      router.push("/deshboard");
     } catch (error: any) {
       setLoading(false);
       console.log(error);
@@ -53,6 +53,7 @@ const LoginPage = () => {
 
   return (
     <div className="flex justify-center items-center h-screen bg-gray-900">
+      <Toaster />
       <div className="w-full max-w-md p-6 rounded-lg bg-gray-800 shadow-md">
         <div className="mb-4 flex justify-end">
           <Link

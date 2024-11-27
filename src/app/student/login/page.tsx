@@ -41,6 +41,7 @@ const StudentLoginPage = () => {
 
   return (
     <div className="flex justify-center items-center h-screen bg-gray-900">
+      <Toaster />
       <div className="w-full max-w-md p-6 rounded-lg bg-gray-800 shadow-md">
         <div className="mb-4 flex justify-end">
           <Link href="/login" className="text-sm text-pink-400 hover:underline">

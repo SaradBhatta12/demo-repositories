@@ -76,7 +76,6 @@ const Page: React.FC = () => {
     e.preventDefault();
     const formdata = new FormData();
     formdata.append("name", formData.name);
-    formdata.append("title", formData.title);
     formdata.append("description", formData.description);
     formdata.append("duration", formData.duration);
     formdata.append("instructor", formData.instructor);
@@ -128,21 +127,6 @@ const Page: React.FC = () => {
               onChange={handleChange}
               className="w-full p-3 rounded border border-gray-600 bg-[#374151]  text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Enter course name"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label htmlFor="title" className="block text-gray-300">
-              Title
-            </label>
-            <input
-              type="text"
-              name="title"
-              id="title"
-              value={formData.title}
-              onChange={handleChange}
-              className="w-full p-3 rounded border border-gray-600 bg-[#374151]  text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="Enter course title"
             />
           </div>
 

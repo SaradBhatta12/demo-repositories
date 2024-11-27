@@ -48,6 +48,7 @@ const RegisterPage = () => {
 
   return (
     <div className="flex justify-center items-center h-screen bg-gray-900">
+      <Toaster />
       <div className="w-full max-w-md p-6 bg-gray-800 rounded-lg shadow-md">
         <h1 className="text-2xl font-semibold text-center text-gray-200 mb-6">
           Register

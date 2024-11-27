@@ -1,4 +1,5 @@
 "use client";
+import Loading from "@/app/components/Loading";
 import axios from "axios";
 import { useEffect, useState } from "react";
 interface TEACHER {
@@ -12,17 +13,26 @@ interface TEACHER {
 }
 const page = () => {
   const [teachers, setTeachers] = useState<TEACHER[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const getTeacher = async () => {
-    const response = await axios.get("/api/teacher");
-    console.log(response.data.teachers);
-    setTeachers(response.data.teachers);
+    try {
+      setLoading(true);
+      const response = await axios.get("/api/teacher");
+      setTeachers(response.data.teachers);
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     getTeacher();
   }, []);
 
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <div className="overflow-x-auto px-4 py-6">
       <div className="overflow-x-auto">

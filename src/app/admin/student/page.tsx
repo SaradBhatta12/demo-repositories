@@ -6,7 +6,6 @@ import {
   FaEnvelope,
   FaFileAlt,
   FaLock,
-  FaSchool,
   FaUpload,
   FaUser,
 } from "react-icons/fa";
@@ -117,18 +116,6 @@ const FormPage = () => {
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="flex items-center gap-2 bg-gray-800 p-3 rounded-md">
-              <FaSchool className="text-gray-500" />
-              <input
-                type="text"
-                name="faculty"
-                value={formData.faculty}
-                onChange={handleChange}
-                placeholder="Faculty"
-                className="w-full bg-transparent text-white placeholder-gray-500 focus:outline-none"
-                required
-              />
-            </div>
             <div className="flex items-center gap-2 bg-gray-800 p-3 rounded-md">
               <FaEnvelope className="text-gray-500" />
               <input

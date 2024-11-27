@@ -1,4 +1,5 @@
 "use client";
+import Loading from "@/app/components/Loading";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -19,15 +20,19 @@ interface CourSe {
 
 const page = () => {
   const [courses, setCourses] = useState<CourSe[]>([]);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const getAllCourses = async () => {
     try {
+      setLoading(true);
       const res = await axios.get("/api/course");
       toast.success(res.data.message);
       setCourses(res.data.courses);
     } catch (error) {
       console.log(error);
       toast.error("Internal server error");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -37,14 +42,21 @@ const page = () => {
 
   const deleteHandler = async (id: string) => {
     try {
+      setLoading(true);
       const res = await axios.delete(`/api/course?id=${id}`);
       toast.success(res.data.message);
       getAllCourses();
     } catch (error) {
       console.log(error);
       toast.error("Internal server error");
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="container mx-auto p-4">

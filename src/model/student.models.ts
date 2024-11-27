@@ -7,7 +7,6 @@ interface IStudent extends Document {
   age: number;
   email: string;
   password: string;
-  faculty: string;
   Profile: mongoose.Schema.Types.ObjectId;
   Course: mongoose.Schema.Types.ObjectId;
   image: string;
@@ -18,7 +17,6 @@ const StudentSchema = new Schema<IStudent>(
   {
     name: { type: String, required: true },
     age: { type: Number },
-    faculty: { type: String },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     Profile: {

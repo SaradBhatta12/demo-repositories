@@ -5,7 +5,6 @@ interface ITeacher extends Document {
   name: string;
   age?: number;
   qualification?: string;
-  module?: string;
   email: string;
   password: string;
 }
@@ -18,7 +17,6 @@ const TeacherSchema = new Schema<ITeacher>(
     name: { type: String, required: true },
     age: { type: Number, min: 0 }, // example validation for age
     qualification: { type: String },
-    module: { type: String },
   },
   {
     timestamps: true,

@@ -281,28 +281,7 @@ const Page = () => {
           </div>
         </div>
 
-        <div className="mb-4">
-          <label className="flex items-center text-sm font-medium mb-2">
-            {" "}
-            <FaCalendarAlt className="mr-2 text-blue-400" /> Select Courses
-          </label>
-          <div className="flex flex-wrap gap-2">
-            {courses.map((course) => (
-              <button
-                key={course._id}
-                type="button"
-                className={`p-2 rounded-md text-white transition ${
-                  selectedCourse === course._id
-                    ? "bg-green-600"
-                    : "bg-gray-700 hover:bg-gray-800"
-                }`}
-                onClick={() => toggleCourseSelection(course._id)}
-              >
-                {course.name}
-              </button>
-            ))}
-          </div>
-        </div>
+        <div className="mb-4"></div>
         <button
           type="submit"
           className="w-full mt-6 py-2 bg-blue-600 text-white text-lg rounded-lg hover:bg-blue-500"

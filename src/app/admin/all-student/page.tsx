@@ -1,9 +1,11 @@
 "use client";
+import Loading from "@/app/components/Loading";
+import UpdatePupup from "@/app/components/UpdatePupup";
 import axios from "axios";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { CiEdit } from "react-icons/ci";
+
 import { MdDeleteSweep } from "react-icons/md";
 
 interface IStudent {
@@ -19,11 +21,13 @@ interface IStudent {
 
 const Page: React.FC = () => {
   const [students, setStudents] = useState<IStudent[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isUpdatePopupOpen, setIsUpdatePopupOpen] = useState<boolean>(false);
 
   // Fetch all students
   const getAllStudents = async () => {
     try {
+      setIsLoading(true);
       const { data } = await axios.get("/api/admin/student");
       // Check if data.students is defined and is an array
       if (data && Array.isArray(data.students)) {
@@ -46,6 +50,7 @@ const Page: React.FC = () => {
   // Delete student
   const deleteHandler = async (id: string) => {
     try {
+      setIsLoading(true);
       await axios.delete(`/api/admin/student?id=${id}`);
       setStudents((prevStudents) =>
         prevStudents.filter((student) => student._id !== id)
@@ -53,15 +58,17 @@ const Page: React.FC = () => {
       toast.success("Student deleted successfully");
     } catch (error) {
       toast.error("Failed to delete student");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   if (isLoading) {
-    return <div className="text-white text-center">Loading...</div>;
+    return <Loading />;
   }
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 relative">
       <div className="overflow-x-auto">
         <table className="min-w-full text-left text-sm text-gray-400">
           <thead className="bg-gray-800">
@@ -80,41 +87,52 @@ const Page: React.FC = () => {
           <tbody>
             {students.length > 0 ? (
               students.map((student) => (
-                <tr
-                  key={student._id}
-                  className="bg-gray-900 border-b border-gray-700"
-                >
-                  <td className="p-4">{student.name}</td>
-                  <td className="p-4">{student.age}</td>
-                  <td className="p-4">{student.email}</td>
-                  <td className="p-4">{student.password}</td>
-                  <td className="p-4">
-                    <img
-                      src={student.image}
-                      alt={student.name}
-                      className="w-12 h-12 object-cover rounded-full"
+                <>
+                  {isUpdatePopupOpen && (
+                    <UpdatePupup
+                      onClose={() => setIsUpdatePopupOpen(false)}
+                      id={student._id}
                     />
-                  </td>
-                  <td className="p-4">
-                    {student?.courses?.map((course, index) => (
-                      <span key={index} className="block text-white">
-                        {course}
-                      </span>
-                    ))}
-                  </td>
-                  <td className="p-4">{student.faculty}</td>
-                  <td className="p-4 cursor-pointer">
-                    <Link href={`/admin/student/edit/${student._id}`}>
-                      <CiEdit className="text-blue-500 hover:text-blue-700" />
-                    </Link>
-                  </td>
-                  <td
-                    className="p-4 cursor-pointer"
-                    onClick={() => deleteHandler(student._id)}
+                  )}
+                  <tr
+                    key={student._id}
+                    className="bg-gray-900 border-b border-gray-700"
                   >
-                    <MdDeleteSweep className="text-red-500 hover:text-red-700" />
-                  </td>
-                </tr>
+                    <td className="p-4">{student.name}</td>
+                    <td className="p-4">{student.age}</td>
+                    <td className="p-4">{student.email}</td>
+                    <td className="p-4">{student.password}</td>
+                    <td className="p-4">
+                      <img
+                        src={student.image}
+                        alt={student.name}
+                        className="w-12 h-12 object-cover rounded-full"
+                      />
+                    </td>
+                    <td className="p-4">
+                      {student?.courses?.map((course, index) => (
+                        <span key={index} className="block text-white">
+                          {course}
+                        </span>
+                      ))}
+                    </td>
+                    <td className="p-4">{student.faculty}</td>
+                    <td className="p-4 cursor-pointer">
+                      {/* <Link href={`/admin/student/edit/${student._id}`}> */}
+                      <CiEdit
+                        className="text-blue-500 hover:text-blue-700 text-4xl hover:bg-slate-400 border border-y-white rounded-full p-2"
+                        onClick={() => setIsUpdatePopupOpen(!isUpdatePopupOpen)}
+                      />
+                      {/* </Link> */}
+                    </td>
+                    <td
+                      className="p-4 cursor-pointer"
+                      onClick={() => deleteHandler(student._id)}
+                    >
+                      <MdDeleteSweep className="text-blue-500 hover:text-blue-700 text-4xl hover:bg-slate-400 border border-y-white rounded-full p-2" />
+                    </td>
+                  </tr>
+                </>
               ))
             ) : (
               <tr>

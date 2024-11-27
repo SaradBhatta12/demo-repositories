@@ -7,6 +7,7 @@ interface IUser extends Document {
   profile: string;
   date: Date;
   isAdmin: boolean;
+  image: string;
 }
 
 const UserSchema: Schema<IUser> = new Schema({
@@ -16,6 +17,11 @@ const UserSchema: Schema<IUser> = new Schema({
   profile: { type: String },
   date: { type: Date, default: Date.now },
   isAdmin: { type: Boolean, default: false },
+  image: {
+    type: String,
+    default:
+      "https://w7.pngwing.com/pngs/613/636/png-transparent-computer-icons-user-profile-male-avatar-avatar-heroes-logo-black-thumbnail.png",
+  },
 });
 
 // Check if model exists before defining
