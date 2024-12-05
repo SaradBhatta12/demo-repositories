@@ -3,8 +3,8 @@
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
-import { FiLoader } from "react-icons/fi";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const RegisterPage = () => {
   const router = useRouter();
@@ -38,17 +38,9 @@ const RegisterPage = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen bg-gray-900">
-        <FiLoader className="text-pink-500 animate-spin text-6xl" />
-      </div>
-    );
-  }
-
   return (
     <div className="flex justify-center items-center h-screen bg-gray-900">
-      <Toaster />
+      <ToastContainer />
       <div className="w-full max-w-md p-6 bg-gray-800 rounded-lg shadow-md">
         <h1 className="text-2xl font-semibold text-center text-gray-200 mb-6">
           Register
@@ -96,8 +88,9 @@ const RegisterPage = () => {
           <button
             type="submit"
             className="w-full bg-pink-500 text-white py-2 rounded-lg text-lg hover:bg-pink-600 transition"
+            disabled={loading}
           >
-            Submit
+            {loading ? "Submiting...." : "Submit"}
           </button>
         </form>
         <div className="mt-6 text-center">
@@ -112,7 +105,6 @@ const RegisterPage = () => {
           </p>
         </div>
       </div>
-      <Toaster />
     </div>
   );
 };

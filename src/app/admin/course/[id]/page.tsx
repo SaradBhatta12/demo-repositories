@@ -2,16 +2,16 @@
 import axios from "axios";
 import { useParams } from "next/navigation";
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import { ToastContainer, toast } from "react-toastify";
 
 const Page: React.FC = () => {
   const [formData, setFormData] = useState({
     name: "",
-    title: "",
-    description: "",
     duration: "",
-    instructor: "",
     price: "",
+    description: "",
+    syllabus: "",
+    image: "",
   });
 
   const [syllabus, setSyllabus] = useState<File | null>(null);
@@ -24,13 +24,14 @@ const Page: React.FC = () => {
   const courseDetails = async () => {
     try {
       const { data } = await axios.get(`/api/getsinglecourse/${id}`);
+      console.log(data);
       setFormData({
         name: data.data.name,
-        title: data.data.title,
-        description: data.data.description,
         duration: data.data.duration,
-        instructor: data.data.instructor,
         price: data.data.price,
+        description: data.data.description,
+        syllabus: data.data.syllabus,
+        image: data.data.image,
       });
     } catch (error) {
       console.error("Error fetching course details", error);
@@ -67,10 +68,7 @@ const Page: React.FC = () => {
     e.preventDefault();
     const formdata = new FormData();
     formdata.append("name", formData.name);
-    formdata.append("title", formData.title);
-    formdata.append("description", formData.description);
     formdata.append("duration", formData.duration);
-    formdata.append("instructor", formData.instructor);
     formdata.append("price", formData.price);
 
     if (syllabus) {
@@ -82,24 +80,11 @@ const Page: React.FC = () => {
     }
 
     try {
-      const response = await axios.put(
-        `/api/course/${id}`,
-        {
-          name: formData.name,
-          title: formData.title,
-          description: formData.description,
-          syllabus: syllabus,
-          duration: formData.duration,
-          instructor: formData.instructor,
-          image: image,
-          price: formData.price,
+      const response = await axios.put(`/api/course/${id}`, formdata, {
+        headers: {
+          "Content-Type": "multipart/form-data",
         },
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      });
 
       if (response.data) {
         toast.success(response.data.message);
@@ -113,16 +98,21 @@ const Page: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-[#000000] px-4 py-6">
+    <div className="min-h-screen w-full flex items-center justify-center bg-[#111111] px-6 py-12">
       <form
         onSubmit={handleSubmit}
         encType="multipart/form-data"
-        className="flex gap-4 bg-[#000000] p-8 rounded-lg shadow-lg w-full max-w-md space-y-6 border border-b-rose-800"
+        className="  flex flex-col bg-[#1F1F1F] p-8 rounded-xl shadow-xl w-full max-w-4xl space-y-6"
       >
-        <div className="flex flex-col gap-4 w-full">
-          <div className="space-y-2">
+        <h2 className="col-span-2 text-2xl text-center text-white font-bold mb-6">
+          Update Course
+        </h2>
+
+        {/* Left Column */}
+        <div className="space-y-6">
+          <div className="space-y-4">
             <label htmlFor="name" className="block text-gray-300 font-semibold">
-              Name
+              Course Name
             </label>
             <input
               type="text"
@@ -130,66 +120,12 @@ const Page: React.FC = () => {
               id="name"
               value={formData.name}
               onChange={handleChange}
-              className="w-full p-3 rounded-md border border-gray-600 bg-transparent text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 hover:border-indigo-500 transition duration-300 ease-in-out"
+              className="w-full p-4 rounded-md border border-gray-600 bg-transparent text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 hover:border-indigo-500 transition duration-300 ease-in-out"
               placeholder="Enter course name"
             />
           </div>
 
-          <div className="space-y-2">
-            <label
-              htmlFor="title"
-              className="block text-gray-300 font-semibold"
-            >
-              Title
-            </label>
-            <input
-              type="text"
-              name="title"
-              id="title"
-              value={formData.title}
-              onChange={handleChange}
-              className="w-full p-3 rounded-md border border-gray-600 bg-transparent text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 hover:border-indigo-500 transition duration-300 ease-in-out"
-              placeholder="Enter course title"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label
-              htmlFor="description"
-              className="block text-gray-300 font-semibold"
-            >
-              Description
-            </label>
-            <textarea
-              name="description"
-              id="description"
-              value={formData.description}
-              onChange={handleChange}
-              className="w-full p-3 rounded-md border border-gray-600 bg-transparent text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 hover:border-indigo-500 transition duration-300 ease-in-out"
-              placeholder="Enter course description"
-              rows={4}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label
-              htmlFor="syllabus"
-              className="block text-gray-300 font-semibold"
-            >
-              Syllabus
-            </label>
-            <input
-              type="file"
-              name="syllabus"
-              id="syllabus"
-              onChange={handleFileChange}
-              className="w-full text-gray-300 file:border-none file:bg-indigo-600 file:text-white file:rounded-md hover:file:bg-indigo-700 cursor-pointer transition duration-300 ease-in-out"
-            />
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-4 w-full">
-          <div className="space-y-2">
+          <div className="space-y-4">
             <label
               htmlFor="duration"
               className="block text-gray-300 font-semibold"
@@ -202,46 +138,12 @@ const Page: React.FC = () => {
               id="duration"
               value={formData.duration}
               onChange={handleChange}
-              className="w-full p-3 rounded-md border border-gray-600 bg-transparent text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 hover:border-indigo-500 transition duration-300 ease-in-out"
+              className="w-full p-4 rounded-md border border-gray-600 bg-transparent text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 hover:border-indigo-500 transition duration-300 ease-in-out"
               placeholder="Enter course duration"
             />
           </div>
 
-          <div className="space-y-2">
-            <label
-              htmlFor="instructor"
-              className="block text-gray-300 font-semibold"
-            >
-              Instructor
-            </label>
-            <input
-              type="text"
-              name="instructor"
-              id="instructor"
-              value={formData.instructor}
-              onChange={handleChange}
-              className="w-full p-3 rounded-md border border-gray-600 bg-transparent text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 hover:border-indigo-500 transition duration-300 ease-in-out"
-              placeholder="Enter instructor name"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label
-              htmlFor="image"
-              className="block text-gray-300 font-semibold"
-            >
-              Featured Image
-            </label>
-            <input
-              type="file"
-              name="image"
-              id="image"
-              onChange={handleFileChange}
-              className="w-full text-gray-300 file:border-none file:bg-indigo-600 file:text-white file:rounded-md hover:file:bg-indigo-700 cursor-pointer transition duration-300 ease-in-out"
-            />
-          </div>
-
-          <div className="space-y-2">
+          <div className="space-y-4">
             <label
               htmlFor="price"
               className="block text-gray-300 font-semibold"
@@ -254,8 +156,61 @@ const Page: React.FC = () => {
               id="price"
               value={formData.price}
               onChange={handleChange}
-              className="w-full p-3 rounded-md border border-gray-600 bg-transparent text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 hover:border-indigo-500 transition duration-300 ease-in-out"
+              className="w-full p-4 rounded-md border border-gray-600 bg-transparent text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 hover:border-indigo-500 transition duration-300 ease-in-out"
               placeholder="Enter price"
+            />
+          </div>
+        </div>
+
+        {/* Right Column */}
+        <div className="space-y-6">
+          <div className="space-y-4">
+            <label
+              htmlFor="syllabus"
+              className="block text-gray-300 font-semibold"
+            >
+              Syllabus (optional)
+            </label>
+            <input
+              type="file"
+              name="syllabus"
+              id="syllabus"
+              onChange={handleFileChange}
+              className="w-full text-gray-300 file:border-none file:bg-indigo-600 file:text-white file:rounded-md hover:file:bg-indigo-700 cursor-pointer transition duration-300 ease-in-out"
+            />
+          </div>
+
+          <div className="space-y-4">
+            <label
+              htmlFor="image"
+              className="block text-gray-300 font-semibold"
+            >
+              Featured Image (optional)
+            </label>
+            <input
+              type="file"
+              name="image"
+              id="image"
+              onChange={handleFileChange}
+              className="w-full text-gray-300 file:border-none file:bg-indigo-600 file:text-white file:rounded-md hover:file:bg-indigo-700 cursor-pointer transition duration-300 ease-in-out"
+            />
+          </div>
+
+          <div className="space-y-4">
+            <label
+              htmlFor="description"
+              className="block text-gray-300 font-semibold"
+            >
+              Description
+            </label>
+            <textarea
+              name="description"
+              id="description"
+              value={formData.description}
+              onChange={handleChange}
+              className="w-full p-4 rounded-md border border-gray-600 bg-transparent text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 hover:border-indigo-500 transition duration-300 ease-in-out"
+              placeholder="Enter course description"
+              rows={5}
             />
           </div>
 
@@ -267,7 +222,7 @@ const Page: React.FC = () => {
           </button>
         </div>
       </form>
-      <Toaster />
+      <ToastContainer />
     </div>
   );
 };

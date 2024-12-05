@@ -1,9 +1,10 @@
 "use client";
 import axios from "axios";
 import { ChangeEvent, useEffect, useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
 import { FaCalendarAlt, FaGraduationCap } from "react-icons/fa";
 import { MdSubject } from "react-icons/md";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface FormData {
   name: string;
@@ -21,43 +22,24 @@ interface Course {
   _id: string;
   name: string;
 }
+
 const Page = () => {
   const [formData, setFormData] = useState<FormData>({
     name: "",
     subjectCode: "",
     units: 0,
     semester: 0,
-    studyMaterial: null, // To hold the uploaded file
-    referenceBook: null, // To hold the uploaded file
+    studyMaterial: null,
+    referenceBook: null,
     description: "",
-    syllabus: null, // To hold the uploaded file
+    syllabus: null,
     assignment: [""],
   });
 
   const [selectedCourse, setSelectedCourse] = useState<string>("");
   const [courses, setCourses] = useState<Course[]>([]);
 
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const target = e.target as HTMLInputElement | HTMLTextAreaElement;
-    const { name, value, files } = target;
-    if (files && files.length > 0) {
-      setFormData({
-        ...formData,
-        [name]: files[0], // Set the first file selected
-      });
-    } else if (name === "assignment") {
-      setFormData({
-        ...formData,
-        [name]: value.split(",").map((item: string) => item.trim()), // For array fields, split by comma
-      });
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
-  };
-
-  // Fetch courses from API
+  // Fetch courses once on component mount
   useEffect(() => {
     const getCourses = async () => {
       try {
@@ -69,9 +51,35 @@ const Page = () => {
     };
     getCourses();
   }, []);
-  const toggleCourseSelection = async (id: string) => {
-    setSelectedCourse(id);
+
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const target = e.target;
+    const { name, value } = target;
+    if (target instanceof HTMLInputElement) {
+      if (target.type === "file") {
+        const files = target.files;
+        if (files && files.length > 0) {
+          setFormData({
+            ...formData,
+            [name]: files[0], // Set the first file selected
+          });
+        }
+      } else {
+        setFormData({
+          ...formData,
+          [name]: value,
+        });
+      }
+    } else if (target instanceof HTMLTextAreaElement) {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formDataToSend = new FormData();
@@ -96,7 +104,7 @@ const Page = () => {
         }
         // Handle other fields
         else {
-          formDataToSend.append(key, value as File);
+          formDataToSend.append(key, value as string);
         }
       }
     }
@@ -108,6 +116,7 @@ const Page = () => {
         },
       });
       toast.success(response.data.message);
+
       // Reset form data after successful submission
       setFormData({
         name: "",
@@ -128,7 +137,7 @@ const Page = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-black to-gray-900 text-white px-4">
-      <Toaster />
+      <ToastContainer />
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-3xl bg-gray-800 p-8 rounded-lg shadow-xl"
@@ -266,7 +275,7 @@ const Page = () => {
               htmlFor="semester"
               className="flex items-center text-sm font-medium mb-2"
             >
-              <FaCalendarAlt className="mr-2 text-blue-400" /> Semester
+              <FaGraduationCap className="mr-2 text-blue-400" /> Semester
             </label>
             <input
               type="number"
@@ -281,13 +290,14 @@ const Page = () => {
           </div>
         </div>
 
-        <div className="mb-4"></div>
-        <button
-          type="submit"
-          className="w-full mt-6 py-2 bg-blue-600 text-white text-lg rounded-lg hover:bg-blue-500"
-        >
-          Submit
-        </button>
+        <div className="mt-6 text-center">
+          <button
+            type="submit"
+            className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+          >
+            Submit
+          </button>
+        </div>
       </form>
     </div>
   );

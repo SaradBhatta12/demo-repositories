@@ -12,7 +12,6 @@ interface CourSe {
   name: string;
   description: string;
   duration: string;
-  instructor: string;
   image: string;
   pdf: string;
   price: string;
@@ -67,7 +66,6 @@ const page = () => {
               <th className="p-4">Course Name</th>
               <th className="p-4">Description</th>
               <th className="p-4">Duration</th>
-              <th className="p-4">Instructor</th>
               <th className="p-4">Image</th>
               <th className="p-4">PDF Link</th>
               <th className="p-4">Price</th>
@@ -82,7 +80,6 @@ const page = () => {
                   <td className="p-4">{course.name}</td>
                   <td className="p-4">{course.description}</td>
                   <td className="p-4">{course.duration}</td>
-                  <td className="p-4">{course.instructor}</td>
                   <td className="p-4">
                     <img
                       src={course.image}
@@ -100,7 +97,7 @@ const page = () => {
                       Download PDF
                     </Link>
                   </td>
-                  <td className="p-4">$99</td>
+                  <td className="p-4">{course.price}</td>
                   <td
                     className="p-4 cursor-pointer"
                     onChange={(e: React.MouseEvent<HTMLTableCellElement>) => {

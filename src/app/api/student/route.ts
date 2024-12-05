@@ -1,6 +1,6 @@
 import connectDB from "@/DB/connectDB";
 import { default as Student, default as student } from "@/model/student.models";
-import { getUserFromStudent } from "@/utils/getUserFromCookie";
+import getUser, { getUserFromStudent } from "@/utils/getUserFromCookie";
 import setStudent from "@/utils/setStudent";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -49,5 +49,67 @@ export const GET = async (req: NextRequest) => {
       { message: "Internal Server Error", success: false },
       { status: 500 }
     );
+  }
+};
+
+// PUT: Update student data
+export const PUT = async (req: NextRequest) => {
+  try {
+    const formdata = await req.formData();
+    const name = formdata.get("name");
+    const age = formdata.get("age");
+    const email = formdata.get("email");
+    const password = formdata.get("password");
+    const faculty = formdata.get("faculty");
+    const image = formdata.get("image");
+    const courses = formdata.get("courses");
+
+    const userid = await getUser();
+    if (!userid) {
+      return NextResponse.json({
+        message: "Please login to update student",
+        status: 401,
+      });
+    }
+
+    // Find the student by ID
+    const studentToUpdate = await student.findById(userid);
+    if (!studentToUpdate) {
+      return NextResponse.json({
+        message: "Student not found",
+        status: 404,
+      });
+    }
+
+    // Update student fields
+    const ProfileImage = image
+      ? await ImageUpload(image as File)
+      : studentToUpdate.image;
+
+    const updatedStudent = await student.findByIdAndUpdate(
+      userid,
+      {
+        name,
+        age,
+        email,
+        password,
+        faculty,
+        courses,
+        image: ProfileImage,
+      },
+      { new: true }
+    );
+
+    return NextResponse.json({
+      message: "Student updated successfully",
+      student: updatedStudent,
+      status: 200,
+    });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({
+      message: "Internal server error",
+      status: 500,
+    });
   }
 };

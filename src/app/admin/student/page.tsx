@@ -1,7 +1,8 @@
 "use client";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import { ToastContainer, toast } from "react-toastify";
+
 import {
   FaEnvelope,
   FaFileAlt,
@@ -195,7 +196,7 @@ const FormPage = () => {
             Submit
           </button>
         </form>
-        <Toaster position="top-right" />
+        <ToastContainer position="top-right" />
       </div>
     </div>
   );

@@ -45,6 +45,9 @@ const Page = () => {
     fetchSubjects();
   }, []);
 
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <div className="container mx-auto p-4">
       {loading ? (

@@ -13,7 +13,6 @@ export const POST = async (req: NextRequest) => {
   try {
     // Parse form data
     const formData = await req.formData();
-
     // Extract form fields
     const name = formData.get("name") as string;
     const email = formData.get("email") as string;
@@ -111,7 +110,7 @@ export const GET = async () => {
       });
     }
 
-    const students = await student.find();
+    const students = await student.find().populate("Course");
 
     return NextResponse.json({
       message: "Students fetched successfully",
@@ -135,42 +134,42 @@ export const PUT = async (req: NextRequest) => {
     const age = formdata.get("age");
     const email = formdata.get("email");
     const password = formdata.get("password");
-    const faculty = formdata.get("faculty");
     const image = formdata.get("image");
-    const courses = formdata.get("courses");
+    const Course = formdata.get("Course");
+    const id = formdata.get("id");
 
-    const userid = await getUser();
-    if (!userid) {
+    const isAdmin = await getUser();
+    if (!isAdmin) {
       return NextResponse.json({
-        message: "Please login to update student",
+        message: "unauthorized..",
+        success: false,
         status: 401,
       });
     }
 
-    // Find the student by ID
-    const studentToUpdate = await student.findById(userid);
-    if (!studentToUpdate) {
+    const admin = await User.findById(isAdmin);
+    if (!admin?.isAdmin) {
       return NextResponse.json({
-        message: "Student not found",
-        status: 404,
+        message: "You are not authorized to update a student",
+        status: 403,
       });
     }
 
-    // Update student fields
-    const ProfileImage = image
-      ? await ImageUpload(image as File)
-      : studentToUpdate.image;
+    let imageURL;
+    if (image) {
+      const ProfileImage = await ImageUpload(image as File);
+      imageURL = ProfileImage;
+    }
 
     const updatedStudent = await student.findByIdAndUpdate(
-      userid,
+      id,
       {
         name,
         age,
         email,
         password,
-        faculty,
-        courses,
-        image: ProfileImage,
+        Course,
+        image: imageURL,
       },
       { new: true }
     );

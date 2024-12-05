@@ -24,7 +24,10 @@ const UserSchema: Schema<IUser> = new Schema({
   },
 });
 
-// Check if model exists before defining
+// Debug log to ensure mongoose models are available
+console.log("Existing Mongoose Models:", mongoose.models);
+
 const User: Model<IUser> =
   mongoose.models.User || mongoose.model<IUser>("User", UserSchema);
+
 export default User;

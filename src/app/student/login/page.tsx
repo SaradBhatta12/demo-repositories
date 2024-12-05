@@ -4,8 +4,8 @@ import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
-import { FaSpinner } from "react-icons/fa";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const StudentLoginPage = () => {
   const router = useRouter();
@@ -29,19 +29,9 @@ const StudentLoginPage = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50">
-        <div className="text-center">
-          <FaSpinner className="animate-spin text-4xl text-blue-500" />
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="flex justify-center items-center h-screen bg-gray-900">
-      <Toaster />
+      <ToastContainer />
       <div className="w-full max-w-md p-6 rounded-lg bg-gray-800 shadow-md">
         <div className="mb-4 flex justify-end">
           <Link href="/login" className="text-sm text-pink-400 hover:underline">
@@ -80,8 +70,9 @@ const StudentLoginPage = () => {
           <button
             type="submit"
             className="w-full bg-pink-500 text-white py-2 rounded-lg text-lg hover:bg-pink-600 transition"
+            disabled={loading}
           >
-            Student Login
+            {loading ? "Loading..." : "Login"}
           </button>
         </form>
         <div className="mt-6 text-center">
@@ -93,7 +84,6 @@ const StudentLoginPage = () => {
           </p>
         </div>
       </div>
-      <Toaster />
     </div>
   );
 };

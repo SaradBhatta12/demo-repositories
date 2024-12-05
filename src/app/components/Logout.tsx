@@ -1,6 +1,6 @@
 "use client";
 
-import toast, { Toaster } from "react-hot-toast";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function ClientComponent() {
   const logoutHandler = async () => {
@@ -30,7 +30,7 @@ export default function ClientComponent() {
 
   return (
     <div>
-      <Toaster position="top-right" />
+      <ToastContainer position="top-right" />
       <button
         onClick={logoutHandler}
         className="w-full bg-red-600 text-white py-2 mt-6 rounded-lg hover:bg-red-700 transition"

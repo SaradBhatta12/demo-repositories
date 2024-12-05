@@ -55,3 +55,12 @@ Lazy loading import from react
 also import Suspense and wrap your component inside the suspense and under the suspance 
 you can use fallback and under fullback ->
 {<p>loading........ component</p>}
+
+
+
+
+
+
+->  get subject on the besis of semester and on the besis or course in user's profile
+->  also show the subjects lessthen his semeter 
+0

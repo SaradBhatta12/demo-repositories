@@ -50,7 +50,7 @@ const Home: React.FC = () => {
         <aside className="w-full lg:w-64 bg-gray-800 p-6">
           <div className="flex items-center space-x-4 mb-6">
             <img
-              src={"/default-avatar.png"}
+              src={isAdmin.image || "/default-avatar.png"}
               alt="User Profile"
               className="w-12 h-12 rounded-full border-2 border-gray-700"
             />

@@ -26,7 +26,6 @@ const StudentSchema = new Schema<IStudent>(
     Course: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Course",
-      required: true,
     },
     image: { type: String, required: true },
     semester: { type: Number },

@@ -1,7 +1,8 @@
 "use client";
 import axios from "axios";
 import { useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import { ToastContainer, toast } from "react-toastify";
+
 import {
   FaCalendarAlt,
   FaEnvelope,
@@ -51,7 +52,7 @@ const Page = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-black to-gray-900 text-white px-4">
-      <Toaster />
+      <ToastContainer />
       <form
         onSubmit={handleSubmit}
         encType="multipart/form-data"

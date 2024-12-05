@@ -3,11 +3,15 @@ import Loading from "@/app/components/Loading";
 import UpdatePupup from "@/app/components/UpdatePupup";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
-import { CiEdit } from "react-icons/ci";
+import { toast, ToastContainer } from "react-toastify";
 
+import { CiEdit } from "react-icons/ci";
 import { MdDeleteSweep } from "react-icons/md";
 
+interface courseI {
+  _id: string;
+  name: string;
+}
 interface IStudent {
   _id: string;
   name: string;
@@ -16,20 +20,23 @@ interface IStudent {
   password: string;
   image: string;
   faculty: string;
-  courses: string[];
+  Course: courseI;
 }
 
 const Page: React.FC = () => {
   const [students, setStudents] = useState<IStudent[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isUpdatePopupOpen, setIsUpdatePopupOpen] = useState<boolean>(false);
+  const [selectedStudentId, setSelectedStudentId] = useState<string | null>(
+    null
+  );
 
   // Fetch all students
   const getAllStudents = async () => {
     try {
       setIsLoading(true);
       const { data } = await axios.get("/api/admin/student");
-      // Check if data.students is defined and is an array
+      console.log(data);
       if (data && Array.isArray(data.students)) {
         setStudents(data.students);
         toast.success("Students fetched successfully");
@@ -69,6 +76,7 @@ const Page: React.FC = () => {
 
   return (
     <div className="container mx-auto p-4 relative">
+      <ToastContainer />
       <div className="overflow-x-auto">
         <table className="min-w-full text-left text-sm text-gray-400">
           <thead className="bg-gray-800">
@@ -79,7 +87,6 @@ const Page: React.FC = () => {
               <th className="p-4">Password</th>
               <th className="p-4">Image</th>
               <th className="p-4">Courses</th>
-              <th className="p-4">Faculty</th>
               <th className="p-4">Edit</th>
               <th className="p-4">Delete</th>
             </tr>
@@ -87,52 +94,38 @@ const Page: React.FC = () => {
           <tbody>
             {students.length > 0 ? (
               students.map((student) => (
-                <>
-                  {isUpdatePopupOpen && (
-                    <UpdatePupup
-                      onClose={() => setIsUpdatePopupOpen(false)}
-                      id={student._id}
+                <tr
+                  key={student._id} // Adding `key` here resolves the key error
+                  className="bg-gray-900 border-b border-gray-700"
+                >
+                  <td className="p-4">{student.name}</td>
+                  <td className="p-4">{student.age}</td>
+                  <td className="p-4">{student.email}</td>
+                  <td className="p-4">{student.password}</td>
+                  <td className="p-4">
+                    <img
+                      src={student.image}
+                      alt={student.name}
+                      className="w-12 h-12 object-cover rounded-full"
                     />
-                  )}
-                  <tr
-                    key={student._id}
-                    className="bg-gray-900 border-b border-gray-700"
+                  </td>
+                  <td className="p-4">{student.Course.name}</td>
+                  <td className="p-4 cursor-pointer">
+                    <CiEdit
+                      className="text-blue-500 hover:text-blue-700 text-4xl hover:bg-slate-400 border border-y-white rounded-full p-2"
+                      onClick={() => {
+                        setIsUpdatePopupOpen(true);
+                        setSelectedStudentId(student._id);
+                      }}
+                    />
+                  </td>
+                  <td
+                    className="p-4 cursor-pointer"
+                    onClick={() => deleteHandler(student._id)}
                   >
-                    <td className="p-4">{student.name}</td>
-                    <td className="p-4">{student.age}</td>
-                    <td className="p-4">{student.email}</td>
-                    <td className="p-4">{student.password}</td>
-                    <td className="p-4">
-                      <img
-                        src={student.image}
-                        alt={student.name}
-                        className="w-12 h-12 object-cover rounded-full"
-                      />
-                    </td>
-                    <td className="p-4">
-                      {student?.courses?.map((course, index) => (
-                        <span key={index} className="block text-white">
-                          {course}
-                        </span>
-                      ))}
-                    </td>
-                    <td className="p-4">{student.faculty}</td>
-                    <td className="p-4 cursor-pointer">
-                      {/* <Link href={`/admin/student/edit/${student._id}`}> */}
-                      <CiEdit
-                        className="text-blue-500 hover:text-blue-700 text-4xl hover:bg-slate-400 border border-y-white rounded-full p-2"
-                        onClick={() => setIsUpdatePopupOpen(!isUpdatePopupOpen)}
-                      />
-                      {/* </Link> */}
-                    </td>
-                    <td
-                      className="p-4 cursor-pointer"
-                      onClick={() => deleteHandler(student._id)}
-                    >
-                      <MdDeleteSweep className="text-blue-500 hover:text-blue-700 text-4xl hover:bg-slate-400 border border-y-white rounded-full p-2" />
-                    </td>
-                  </tr>
-                </>
+                    <MdDeleteSweep className="text-blue-500 hover:text-blue-700 text-4xl hover:bg-slate-400 border border-y-white rounded-full p-2" />
+                  </td>
+                </tr>
               ))
             ) : (
               <tr>
@@ -144,6 +137,13 @@ const Page: React.FC = () => {
           </tbody>
         </table>
       </div>
+      {/* Conditionally render the UpdatePupup component outside the map */}
+      {isUpdatePopupOpen && selectedStudentId && (
+        <UpdatePupup
+          onClose={() => setIsUpdatePopupOpen(false)}
+          id={selectedStudentId}
+        />
+      )}
     </div>
   );
 };

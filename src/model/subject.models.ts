@@ -9,6 +9,7 @@ interface ISubject {
   referenceBook: string[];
   description: string;
   syllabus: string;
+  course: mongoose.Schema.Types.ObjectId;
 }
 
 const SubjectSchema = new mongoose.Schema<ISubject>({
@@ -20,6 +21,7 @@ const SubjectSchema = new mongoose.Schema<ISubject>({
   referenceBook: { type: [String] },
   description: { type: String, required: true },
   syllabus: { type: String },
+  course: { type: mongoose.Schema.Types.ObjectId, ref: "Course" }, // Reference to Course model
 });
 
 const Subject =
