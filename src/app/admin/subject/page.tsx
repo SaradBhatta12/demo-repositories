@@ -1,6 +1,7 @@
 "use client";
+import Loading from "@/app/components/Loading";
 import axios from "axios";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { FaCalendarAlt, FaGraduationCap } from "react-icons/fa";
 import { MdSubject } from "react-icons/md";
 import { ToastContainer, toast } from "react-toastify";
@@ -36,21 +37,8 @@ const Page = () => {
     assignment: [""],
   });
 
-  const [selectedCourse, setSelectedCourse] = useState<string>("");
-  const [courses, setCourses] = useState<Course[]>([]);
-
+  const [loading, setLoading] = useState(false);
   // Fetch courses once on component mount
-  useEffect(() => {
-    const getCourses = async () => {
-      try {
-        const { data } = await axios.get("/api/course");
-        setCourses(data.courses);
-      } catch (error) {
-        toast.error("Failed to fetch courses");
-      }
-    };
-    getCourses();
-  }, []);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -110,6 +98,7 @@ const Page = () => {
     }
 
     try {
+      setLoading(true);
       const response = await axios.post("/api/subject/create", formDataToSend, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -132,8 +121,14 @@ const Page = () => {
     } catch (error: any) {
       console.error("Error submitting form:", error);
       toast.error(error.response?.data?.message || "Submission error");
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-black to-gray-900 text-white px-4">
@@ -294,8 +289,9 @@ const Page = () => {
           <button
             type="submit"
             className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+            disabled={loading}
           >
-            Submit
+            {loading ? "Loading" : "Submit"}
           </button>
         </div>
       </form>

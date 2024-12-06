@@ -5,7 +5,7 @@ import getUser from "@/utils/getUserFromCookie";
 import { NextRequest, NextResponse } from "next/server";
 
 await connectDB();
-export const POST = async (req: NextRequest, res: NextResponse) => {
+export const POST = async (req: NextRequest) => {
   try {
     const {
       title,

@@ -1,11 +1,7 @@
-import { FaSpinner } from "react-icons/fa";
-
 const loading = () => {
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50">
-      <div className="text-center">
-        <FaSpinner className="animate-spin text-4xl text-blue-500" />
-      </div>
+    <div className="flex justify-center items-center min-h-screen bg-black text-white">
+      <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-yellow-500"></div>
     </div>
   );
 };

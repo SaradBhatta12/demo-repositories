@@ -1,5 +1,6 @@
 "use client";
 
+import { FaSignOutAlt } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 
 export default function ClientComponent() {
@@ -33,9 +34,10 @@ export default function ClientComponent() {
       <ToastContainer position="top-right" />
       <button
         onClick={logoutHandler}
-        className="w-full bg-red-600 text-white py-2 mt-6 rounded-lg hover:bg-red-700 transition"
+        className="w-full bg-red-600 text-white p-2 text-[10px] px-4 rounded-lg hover:bg-red-700 transition flex justify-center items-center ga-4"
       >
-        Logout
+        <FaSignOutAlt />
+        &nbsp; Logout
       </button>
     </div>
   );

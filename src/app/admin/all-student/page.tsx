@@ -109,7 +109,11 @@ const Page: React.FC = () => {
                       className="w-12 h-12 object-cover rounded-full"
                     />
                   </td>
-                  <td className="p-4">{student.Course.name}</td>
+                  <td className="p-4">
+                    {student.Course
+                      ? student.Course.name
+                      : "No course enrolled"}
+                  </td>
                   <td className="p-4 cursor-pointer">
                     <CiEdit
                       className="text-blue-500 hover:text-blue-700 text-4xl hover:bg-slate-400 border border-y-white rounded-full p-2"

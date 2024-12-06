@@ -1,4 +1,5 @@
 "use client";
+import Loading from "@/app/components/Loading";
 import axios from "axios";
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { FaClock, FaFileUpload, FaImage, FaUser } from "react-icons/fa";
@@ -23,6 +24,8 @@ const Page: React.FC = () => {
   const [subjects, setSubjects] = useState<SUBJECT[]>([]);
   const [sub, setSub] = useState<string[]>([]);
   const [description, setDescription] = useState<string>("");
+  const [loading, setLoading] = useState(false);
+  const [submiting, setSubmiting] = useState(false);
 
   const handleSubjectClick = (subjectId: string) => {
     setSub((prevSub) => {
@@ -37,6 +40,7 @@ const Page: React.FC = () => {
   useEffect(() => {
     const fetchSubjects = async () => {
       try {
+        setLoading(true);
         const response = await axios.get("/api/subject/create");
         if (response.data.success) {
           setSubjects(response.data.subjects);
@@ -45,6 +49,8 @@ const Page: React.FC = () => {
         }
       } catch (error) {
         console.error("Error fetching subjects:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -92,6 +98,7 @@ const Page: React.FC = () => {
     try {
       const response = await axios.post("/api/course", formdata);
       if (response) {
+        setSubmiting(true);
         toast.success(response.data.message || "Course added successfully");
       } else {
         toast.error("Error adding course");
@@ -99,8 +106,14 @@ const Page: React.FC = () => {
     } catch (error) {
       console.error("Error submitting form", error);
       toast.error("Error adding course");
+    } finally {
+      setSubmiting(false);
     }
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#000000] px-4 py-8">
@@ -148,6 +161,24 @@ const Page: React.FC = () => {
             />
           </div>
 
+          <div className="space-y-3">
+            <label
+              htmlFor="price"
+              className="text-gray-300 flex items-center text-sm"
+            >
+              <FaClock className="mr-2 text-lg" /> Price
+            </label>
+            <input
+              type="text"
+              name="price"
+              id="price"
+              value={formData.price}
+              onChange={handleChange}
+              className="w-full p-4 rounded-lg border border-gray-600 bg-[#374151] text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              placeholder="Enter course duration"
+            />
+          </div>
+
           {/* Number of Semesters */}
           <div className="space-y-3">
             <label
@@ -163,7 +194,7 @@ const Page: React.FC = () => {
               value={formData.noOfSemesters}
               onChange={handleChange}
               className="w-full p-4 rounded-lg border border-gray-600 bg-[#374151] text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="Enter number of semesters"
+              placeholder="Enter Course Price"
             />
           </div>
 
@@ -262,9 +293,10 @@ const Page: React.FC = () => {
         <div className="flex justify-center items-center space-x-4 mt-6">
           <button
             type="submit"
+            disabled={submiting}
             className="py-3 px-6 bg-indigo-500 hover:bg-indigo-600 rounded-lg text-white font-semibold w-full md:w-auto"
           >
-            Add Course
+            {submiting ? "Adding " : "Add course"}
           </button>
         </div>
       </form>

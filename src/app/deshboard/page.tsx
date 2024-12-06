@@ -2,7 +2,8 @@ import connectDB from "@/DB/connectDB";
 import Course from "@/model/course.models";
 import Image from "next/image";
 import Link from "next/link";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaUser } from "react-icons/fa";
+import ClientComponent from "../components/Logout";
 
 await connectDB();
 const courses = await Course.find().limit(10);
@@ -12,6 +13,16 @@ const Page = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-gray-900 to-black p-6 flex flex-col items-center">
+      <Link href={"/admin"}>
+        <button className="absolute top-2 right-6 py-2 px-4 bg-purple-500 text-white text-[10px] font-semibold rounded hover:bg-purple-600 transition flex gap-2 items-center justify-center">
+          <FaUser />
+          Admin
+        </button>
+      </Link>
+
+      <div className="logout absolute right-28 top-2">
+        <ClientComponent />
+      </div>
       {/* Search Bar */}
       <div className="sticky top-6 z-10 w-full max-w-3xl">
         <div className="relative flex items-center">
@@ -52,7 +63,7 @@ const Page = () => {
                   course.description?.slice(0, 50) + "..."
                 }
               </p>
-              <Link href={course.syllabus || ""}>
+              <Link href={`/deshboard/${course.id}`}>
                 <button className="mt-4 py-2 px-4 bg-purple-500 text-white text-sm font-semibold rounded hover:bg-purple-600 transition">
                   Learn More
                 </button>

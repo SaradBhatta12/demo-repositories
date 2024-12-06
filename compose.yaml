@@ -1,0 +1,13 @@
+services:
+  server:
+    build:
+      context: .
+    environment:
+      NODE_ENV: production
+      MONGO_URL: $(MONGO_URL)
+      JWT_SECRET: ${JWT_SECRET}
+      API_SECRET: ${API_SECRET}
+      API_KEY: ${API_KEY}
+      CLOUDINARY_CLOUD_NAME: ${CLOUDINARY_CLOUD_NAME}
+    ports:
+      - 3000:3000
